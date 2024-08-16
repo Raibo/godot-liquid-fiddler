@@ -1,9 +1,157 @@
-[gd_scene format=3 uid="uid://livgtmaj2lyh"]
+[gd_scene load_steps=6 format=3 uid="uid://livgtmaj2lyh"]
 
-[node name="Control" type="Control"]
+[ext_resource type="Texture2D" uid="uid://dqubc6nut57e0" path="res://Arrow1.png" id="1_cski1"]
+[ext_resource type="Script" path="res://TabContainer.gd" id="1_s02ko"]
+[ext_resource type="Script" path="res://Node.cs" id="1_xoy1o"]
+[ext_resource type="Script" path="res://VTabButtonsContainer.gd" id="2_gqut8"]
+[ext_resource type="PackedScene" uid="uid://wf3xmk3ji1pu" path="res://Scenes/tab_button.tscn" id="2_q8d5s"]
+
+[node name="Main" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Node" type="Node" parent="."]
+script = ExtResource("1_xoy1o")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_direction = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VBoxContainerImages" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="HBoxContainer/VBoxContainerImages"]
+custom_minimum_size = Vector2(0, 166)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainerImages"]
+layout_mode = 2
+size_flags_horizontal = 0
+texture = ExtResource("1_cski1")
+stretch_mode = 2
+
+[node name="VTabButtonsContainer" type="VBoxContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+script = ExtResource("2_gqut8")
+
+[node name="LabelOptions" type="Label" parent="HBoxContainer/VTabButtonsContainer"]
+layout_mode = 2
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="ButtonSettings" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+layout_mode = 2
+text = "Settings"
+
+[node name="LabelConfigs" type="Label" parent="HBoxContainer/VTabButtonsContainer"]
+layout_mode = 2
+text = "Configs"
+horizontal_alignment = 1
+
+[node name="ButtonConfGroup" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+layout_mode = 2
+text = "Group Config"
+tab_index = 1
+
+[node name="ButtonConfEndp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+layout_mode = 2
+text = "Endpoint Config"
+tab_index = 2
+
+[node name="ButtonConfMerg" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+layout_mode = 2
+text = "Merged Config"
+tab_index = 3
+
+[node name="LabelRequest" type="Label" parent="HBoxContainer/VTabButtonsContainer"]
+layout_mode = 2
+text = "Request"
+horizontal_alignment = 1
+
+[node name="ButtonSourceReq" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+layout_mode = 2
+text = "Source Request"
+tab_index = 4
+
+[node name="ButtonScopeReq" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+layout_mode = 2
+text = "Request Scope"
+tab_index = 5
+
+[node name="ButtonTemplateReq" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+layout_mode = 2
+text = "Request Template"
+tab_index = 6
+
+[node name="ButtonRenderReq" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+layout_mode = 2
+text = "Rendered Request"
+tab_index = 7
+
+[node name="LabelResponse" type="Label" parent="HBoxContainer/VTabButtonsContainer"]
+layout_mode = 2
+text = "Response"
+horizontal_alignment = 1
+
+[node name="ButtonSourceResp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+layout_mode = 2
+text = "Source Response"
+tab_index = 8
+
+[node name="ButtonScopeResp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+layout_mode = 2
+text = "Response Scope"
+tab_index = 9
+
+[node name="ButtonTemplateResp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+layout_mode = 2
+text = "Response Template"
+tab_index = 10
+
+[node name="ButtonTemplateErr" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+layout_mode = 2
+text = "Error Template"
+tab_index = 11
+
+[node name="ButtonRenderResp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+layout_mode = 2
+text = "Rendered Response"
+tab_index = 12
+
+[node name="TabContainer" type="TabContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+tabs_visible = false
+script = ExtResource("1_s02ko")
+
+[node name="CodeEdit" type="CodeEdit" parent="HBoxContainer/TabContainer"]
+layout_mode = 2
+gutters_draw_line_numbers = true
+gutters_zero_pad_line_numbers = true
+gutters_draw_fold_gutter = true
+indent_use_spaces = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+
+[node name="CodeEdit2" type="CodeEdit" parent="HBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+gutters_draw_line_numbers = true
+gutters_zero_pad_line_numbers = true
+gutters_draw_fold_gutter = true
+indent_use_spaces = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+
+[connection signal="tab_pressed" from="HBoxContainer/VTabButtonsContainer" to="HBoxContainer/TabContainer" method="set_active"]
+[connection signal="tab_selected" from="HBoxContainer/TabContainer" to="HBoxContainer/VTabButtonsContainer" method="set_toggle"]
