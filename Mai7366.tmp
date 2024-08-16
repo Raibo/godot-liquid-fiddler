@@ -1,13 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://livgtmaj2lyh"]
+[gd_scene load_steps=8 format=3 uid="uid://livgtmaj2lyh"]
 
 [ext_resource type="Texture2D" uid="uid://dqubc6nut57e0" path="res://Arrow1.png" id="1_cski1"]
 [ext_resource type="Script" path="res://UtilAccessNode.cs" id="1_gmv7o"]
 [ext_resource type="Script" path="res://TabContainer.gd" id="1_s02ko"]
 [ext_resource type="Script" path="res://VTabButtonsContainer.gd" id="2_gqut8"]
 [ext_resource type="PackedScene" uid="uid://wf3xmk3ji1pu" path="res://Scenes/tab_button.tscn" id="2_q8d5s"]
+[ext_resource type="Script" path="res://CodeEditMergedConfig.gd" id="6_ot85s"]
 [ext_resource type="PackedScene" uid="uid://ie34vkifem4q" path="res://Scenes/template_tab.tscn" id="6_pg3m3"]
-[ext_resource type="PackedScene" uid="uid://c6uxo2unx20s2" path="res://Scenes/json_edit.tscn" id="7_j0meu"]
-[ext_resource type="PackedScene" uid="uid://cvrekp5o3cfa7" path="res://Scenes/merged_json.tscn" id="7_ofv8o"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -135,30 +134,48 @@ size_flags_horizontal = 3
 tabs_visible = false
 script = ExtResource("1_s02ko")
 
-[node name="SettingsPlaceholder" type="Label" parent="HBoxContainer/TabContainer"]
+[node name="LabelPlaceholder" type="Label" parent="HBoxContainer/TabContainer"]
 layout_mode = 2
 text = "Nope"
 
-[node name="GroupConfig" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("util_node") instance=ExtResource("7_j0meu")]
-layout_mode = 2
-util_node = NodePath("../../../UtilAccessNode")
-
-[node name="EndpointConfig" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("util_node") instance=ExtResource("7_j0meu")]
-layout_mode = 2
-util_node = NodePath("../../../UtilAccessNode")
-
-[node name="MergedConfig" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources", "util_node") instance=ExtResource("7_ofv8o")]
-layout_mode = 2
-sources = [NodePath("../GroupConfig"), NodePath("../EndpointConfig")]
-util_node = NodePath("../../../UtilAccessNode")
-
-[node name="SourceReqPlaceholder" type="Label" parent="HBoxContainer/TabContainer"]
+[node name="CodeEditGroupConfig" type="CodeEdit" parent="HBoxContainer/TabContainer"]
 visible = false
 layout_mode = 2
-text = "Nope"
+gutters_draw_line_numbers = true
+gutters_zero_pad_line_numbers = true
+gutters_draw_fold_gutter = true
+indent_use_spaces = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
 
-[node name="TemplateTab" parent="HBoxContainer/TabContainer" instance=ExtResource("6_pg3m3")]
+[node name="CodeEditEndpointConfig" type="CodeEdit" parent="HBoxContainer/TabContainer"]
+visible = false
 layout_mode = 2
+gutters_draw_line_numbers = true
+gutters_zero_pad_line_numbers = true
+gutters_draw_fold_gutter = true
+indent_use_spaces = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+
+[node name="CodeEditMergedConfig" type="CodeEdit" parent="HBoxContainer/TabContainer"]
+visible = false
+layout_mode = 2
+gutters_draw_line_numbers = true
+gutters_zero_pad_line_numbers = true
+gutters_draw_fold_gutter = true
+delimiter_strings = Array[String](["\" \"", "' '"])
+indent_use_spaces = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+script = ExtResource("6_ot85s")
+
+[node name="TemplateTab" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("renderer") instance=ExtResource("6_pg3m3")]
+layout_mode = 2
+renderer = NodePath("../../../UtilAccessNode")
 
 [node name="Button" type="Button" parent="."]
 layout_mode = 0
@@ -170,6 +187,4 @@ text = "Go!"
 
 [connection signal="tab_pressed" from="HBoxContainer/VTabButtonsContainer" to="HBoxContainer/TabContainer" method="set_active"]
 [connection signal="tab_selected" from="HBoxContainer/TabContainer" to="HBoxContainer/VTabButtonsContainer" method="set_toggle"]
-[connection signal="text_changed" from="HBoxContainer/TabContainer/GroupConfig" to="HBoxContainer/TabContainer/MergedConfig" method="update_merged_json"]
-[connection signal="text_changed" from="HBoxContainer/TabContainer/EndpointConfig" to="HBoxContainer/TabContainer/MergedConfig" method="update_merged_json"]
 [connection signal="pressed" from="Button" to="UtilAccessNode" method="Render"]

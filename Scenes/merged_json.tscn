@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cvrekp5o3cfa7"]
+
+[ext_resource type="Script" path="res://Scenes/MergedJson.gd" id="1_86sct"]
+
+[node name="MergedJson" type="CodeEdit"]
+visible = false
+script = ExtResource("1_86sct")
