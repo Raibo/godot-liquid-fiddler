@@ -1,14 +1,16 @@
-extends JsonEdit
+extends CodeEdit
 
-@export var sources: Array[JsonEdit]
+@export var scope_path: String
+@export var sources: Array[Node]
 
 func update_merged_json():
 	var jsons: Array[String]
-	jsons.assign(sources.map(func(x: JsonEdit): return x.text))
-	
 	var paths: Array[String]
-	paths.assign(sources.map(func(x: JsonEdit): return x.scope_path))
 	
-	var merged_json = util_node.call("MergeJsons", jsons, paths)
+	for i in sources.size():
+		jsons.append(sources[i].text)
+		paths.append(sources[i].scope_path if sources[i].scope_path else "")
+	
+	var merged_json = %UtilAccessNode.call("MergeJsons", jsons, paths)
 	text = merged_json if merged_json else ""
 

@@ -1,13 +1,14 @@
-[gd_scene load_steps=9 format=3 uid="uid://livgtmaj2lyh"]
+[gd_scene load_steps=10 format=3 uid="uid://livgtmaj2lyh"]
 
 [ext_resource type="Texture2D" uid="uid://dqubc6nut57e0" path="res://Arrow1.png" id="1_cski1"]
 [ext_resource type="Script" path="res://UtilAccessNode.cs" id="1_gmv7o"]
 [ext_resource type="Script" path="res://TabContainer.gd" id="1_s02ko"]
 [ext_resource type="Script" path="res://VTabButtonsContainer.gd" id="2_gqut8"]
 [ext_resource type="PackedScene" uid="uid://wf3xmk3ji1pu" path="res://Scenes/tab_button.tscn" id="2_q8d5s"]
+[ext_resource type="PackedScene" uid="uid://c51hemtuxqr6p" path="res://Scenes/json_edit2.tscn" id="6_j6rqq"]
 [ext_resource type="PackedScene" uid="uid://ie34vkifem4q" path="res://Scenes/template_tab.tscn" id="6_pg3m3"]
-[ext_resource type="PackedScene" uid="uid://c6uxo2unx20s2" path="res://Scenes/json_edit.tscn" id="7_j0meu"]
 [ext_resource type="PackedScene" uid="uid://cvrekp5o3cfa7" path="res://Scenes/merged_json.tscn" id="7_ofv8o"]
+[ext_resource type="Script" path="res://Button.gd" id="10_3awm5"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -18,6 +19,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="UtilAccessNode" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("1_gmv7o")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
@@ -132,44 +134,81 @@ tab_index = 12
 [node name="TabContainer" type="TabContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+current_tab = 3
 tabs_visible = false
 script = ExtResource("1_s02ko")
 
 [node name="SettingsPlaceholder" type="Label" parent="HBoxContainer/TabContainer"]
-layout_mode = 2
-text = "Nope"
-
-[node name="GroupConfig" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("util_node") instance=ExtResource("7_j0meu")]
-layout_mode = 2
-util_node = NodePath("../../../UtilAccessNode")
-
-[node name="EndpointConfig" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("util_node") instance=ExtResource("7_j0meu")]
-layout_mode = 2
-util_node = NodePath("../../../UtilAccessNode")
-
-[node name="MergedConfig" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources", "util_node") instance=ExtResource("7_ofv8o")]
-layout_mode = 2
-sources = [NodePath("../GroupConfig"), NodePath("../EndpointConfig")]
-util_node = NodePath("../../../UtilAccessNode")
-
-[node name="SourceReqPlaceholder" type="Label" parent="HBoxContainer/TabContainer"]
 visible = false
 layout_mode = 2
 text = "Nope"
 
-[node name="TemplateTab" parent="HBoxContainer/TabContainer" instance=ExtResource("6_pg3m3")]
+[node name="GroupConfig" parent="HBoxContainer/TabContainer" instance=ExtResource("6_j6rqq")]
+visible = false
+layout_mode = 2
+
+[node name="EndpointConfig" parent="HBoxContainer/TabContainer" instance=ExtResource("6_j6rqq")]
+visible = false
+layout_mode = 2
+
+[node name="MergedConfig" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources") instance=ExtResource("7_ofv8o")]
+layout_mode = 2
+sources = [NodePath("../GroupConfig"), NodePath("../EndpointConfig")]
+
+[node name="SourceRequest" parent="HBoxContainer/TabContainer" instance=ExtResource("6_j6rqq")]
+visible = false
+layout_mode = 2
+scope_path = "source"
+
+[node name="RequestScope" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources") instance=ExtResource("7_ofv8o")]
+visible = false
+layout_mode = 2
+sources = [NodePath("../MergedConfig"), NodePath("../SourceRequest")]
+
+[node name="TemplateTab" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("renderOutput") instance=ExtResource("6_pg3m3")]
+layout_mode = 2
+renderOutput = NodePath("../RenderedRequest")
+
+[node name="RenderedRequest" parent="HBoxContainer/TabContainer" instance=ExtResource("7_ofv8o")]
+visible = false
+layout_mode = 2
+scope_path = "convertedRequest"
+
+[node name="SourceResponse" parent="HBoxContainer/TabContainer" instance=ExtResource("6_j6rqq")]
+visible = false
+layout_mode = 2
+
+[node name="ResponseScope" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources") instance=ExtResource("7_ofv8o")]
+visible = false
+layout_mode = 2
+sources = [NodePath("../MergedConfig"), NodePath("../SourceRequest"), NodePath("../RenderedRequest"), NodePath("../SourceResponse")]
+
+[node name="ResponseTemplate" parent="HBoxContainer/TabContainer" instance=ExtResource("6_pg3m3")]
+layout_mode = 2
+
+[node name="ErrorTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("template") instance=ExtResource("6_pg3m3")]
+layout_mode = 2
+template = NodePath("../ResponseTemplate/CodeEditTemplate")
+
+[node name="RenderedResponse" parent="HBoxContainer/TabContainer" instance=ExtResource("7_ofv8o")]
+visible = false
 layout_mode = 2
 
 [node name="Button" type="Button" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 3.0
 offset_top = 4.0
 offset_right = 75.0
 offset_bottom = 25.0
 text = "Go!"
+script = ExtResource("10_3awm5")
 
 [connection signal="tab_pressed" from="HBoxContainer/VTabButtonsContainer" to="HBoxContainer/TabContainer" method="set_active"]
 [connection signal="tab_selected" from="HBoxContainer/TabContainer" to="HBoxContainer/VTabButtonsContainer" method="set_toggle"]
 [connection signal="text_changed" from="HBoxContainer/TabContainer/GroupConfig" to="HBoxContainer/TabContainer/MergedConfig" method="update_merged_json"]
 [connection signal="text_changed" from="HBoxContainer/TabContainer/EndpointConfig" to="HBoxContainer/TabContainer/MergedConfig" method="update_merged_json"]
-[connection signal="pressed" from="Button" to="UtilAccessNode" method="Render"]
+[connection signal="text_changed" from="HBoxContainer/TabContainer/MergedConfig" to="HBoxContainer/TabContainer/RequestScope" method="update_merged_json"]
+[connection signal="text_set" from="HBoxContainer/TabContainer/MergedConfig" to="HBoxContainer/TabContainer/RequestScope" method="update_merged_json"]
+[connection signal="text_changed" from="HBoxContainer/TabContainer/SourceRequest" to="HBoxContainer/TabContainer/RequestScope" method="update_merged_json"]
+[connection signal="pressed" from="Button" to="Button" method="test"]

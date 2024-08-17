@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://c51hemtuxqr6p"]
+
+[ext_resource type="Script" path="res://Scenes/JsonEdit.gd" id="1_dwy3m"]
+
+[node name="JsonEdit" type="HBoxContainer"]
+script = ExtResource("1_dwy3m")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = " B "
+
+[node name="CodeEdit" type="CodeEdit" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+gutters_draw_line_numbers = true
+gutters_zero_pad_line_numbers = true
+gutters_draw_fold_gutter = true
+indent_use_spaces = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="beautify"]
+[connection signal="text_changed" from="CodeEdit" to="." method="emit_text_changed"]

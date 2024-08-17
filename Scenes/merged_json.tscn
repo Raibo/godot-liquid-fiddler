@@ -2,6 +2,15 @@
 
 [ext_resource type="Script" path="res://Scenes/MergedJson.gd" id="1_86sct"]
 
-[node name="MergedJson" type="CodeEdit"]
-visible = false
+[node name="CodeEdit" type="CodeEdit"]
+size_flags_horizontal = 3
+size_flags_vertical = 3
+editable = false
+gutters_draw_line_numbers = true
+gutters_zero_pad_line_numbers = true
+gutters_draw_fold_gutter = true
+indent_use_spaces = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
 script = ExtResource("1_86sct")

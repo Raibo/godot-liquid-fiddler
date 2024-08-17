@@ -6,65 +6,79 @@ using System.Collections.Generic;
 
 public partial class UtilAccessNode : Node
 {
-    private string Render(string? templateText, string? scopeJson)
-    {
-        templateText ??= string.Empty;
-        scopeJson ??= "{}";
+	private string Render(string? templateText, string? scopeJson)
+	{
+		templateText ??= string.Empty;
+		scopeJson ??= "{}";
 
-        var scope = JsonUtil.Parse(scopeJson);
+		var scope = JsonUtil.Parse(scopeJson);
 
-        var result = LiquidUtil.Render(templateText, new Dictionary<string, object?>());
+		var result = LiquidUtil.Render(templateText, new Dictionary<string, object?>());
 
-        if (result.IsFailure)
-            return string.Join('\n', result.Error);
+		if (result.IsFailure)
+			return string.Join('\n', result.Error);
 
-        return result.Value;
-    }
+		return result.Value;
+	}
 
-    private string MergeJsons(string[] jsons, string[] paths)
-    {
-        var mergedData = new Dictionary<string, object?>();
+	private string MergeJsons(string[] jsons, string[] paths)
+	{
+		var mergedData = new Dictionary<string, object?>();
 
-        for (int i = 0; i < jsons.Length; i++)
-        {
-            var json = jsons[i];
-            var parseOutcome = JsonUtil.Parse(json);
+		for (int i = 0; i < jsons.Length; i++)
+		{
+			var json = jsons[i];
+			var parseOutcome = JsonUtil.Parse(json);
 
-            if (parseOutcome.IsFailure || parseOutcome.Value is null)
-                continue;
+			if (parseOutcome.IsFailure || parseOutcome.Value is null)
+				continue;
 
-            var path = paths[i];
+			var currentData = parseOutcome.Value;
+			var path = paths[i];
 
-            if (!string.IsNullOrWhiteSpace(path))
-            {
-                mergedData = new Dictionary<string, object?>
-                {
-                    [path] = mergedData,
-                };
-            }
+			if (!string.IsNullOrWhiteSpace(path))
+			{
+				currentData = new Dictionary<string, object?>
+				{
+					[path] = currentData,
+				};
+			}
 
-            InsertDictionary(mergedData, parseOutcome.Value);
-        }
+			InsertDictionary(mergedData, currentData);
+		}
 
-        return JsonUtil.Serialize(mergedData);
-    }
+		return JsonUtil.Serialize(mergedData);
+	}
 
-    private void InsertDictionary(Dictionary<string, object?> destination, Dictionary<string, object?> source)
-    {
-        foreach (var (key, sourceValue) in source)
-        {
-            destination.TryGetValue(key, out var destValue);
+	private string? FormatJson(string? json)
+	{
+		if (string.IsNullOrWhiteSpace(json))
+			return json;
 
-            switch (destValue, sourceValue)
-            {
-                case (Dictionary<string, object?> destDict, Dictionary<string, object?> sourceDict):
-                    InsertDictionary(destDict, sourceDict);
-                    break;
+		var dataResult = JsonUtil.Parse(json);
 
-                default:
-                    destination[key] = sourceValue;
-                    break;
-            }
-        }
-    }
+		if (dataResult.IsFailure)
+			return json;
+
+		return JsonUtil.Serialize(dataResult.Value);
+	}
+
+	private void InsertDictionary(Dictionary<string, object?> destination, Dictionary<string, object?> source)
+	{
+		foreach (var (key, sourceValue) in source)
+		{
+			destination.TryGetValue(key, out var destValue);
+
+			switch (destValue, sourceValue)
+			{
+				case (Dictionary<string, object?> destDict, Dictionary<string, object?> sourceDict):
+					InsertDictionary(destDict, sourceDict);
+					break;
+
+				default:
+					destination[key] = sourceValue;
+					break;
+			}
+		}
+	}
 }
