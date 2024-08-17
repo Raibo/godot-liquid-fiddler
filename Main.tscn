@@ -154,25 +154,27 @@ layout_mode = 2
 [node name="MergedConfig" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources") instance=ExtResource("7_ofv8o")]
 layout_mode = 2
 sources = [NodePath("../GroupConfig"), NodePath("../EndpointConfig")]
+source_paths = Array[String](["", ""])
 
 [node name="SourceRequest" parent="HBoxContainer/TabContainer" instance=ExtResource("6_j6rqq")]
 visible = false
 layout_mode = 2
-scope_path = "source"
 
 [node name="RequestScope" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources") instance=ExtResource("7_ofv8o")]
 visible = false
 layout_mode = 2
 sources = [NodePath("../MergedConfig"), NodePath("../SourceRequest")]
+source_paths = Array[String](["", "source"])
 
-[node name="TemplateTab" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("renderOutput") instance=ExtResource("6_pg3m3")]
+[node name="RequestTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("6_pg3m3")]
+visible = false
 layout_mode = 2
+scope = NodePath("../RequestScope")
 renderOutput = NodePath("../RenderedRequest")
 
 [node name="RenderedRequest" parent="HBoxContainer/TabContainer" instance=ExtResource("7_ofv8o")]
 visible = false
 layout_mode = 2
-scope_path = "convertedRequest"
 
 [node name="SourceResponse" parent="HBoxContainer/TabContainer" instance=ExtResource("6_j6rqq")]
 visible = false
@@ -182,13 +184,19 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 sources = [NodePath("../MergedConfig"), NodePath("../SourceRequest"), NodePath("../RenderedRequest"), NodePath("../SourceResponse")]
+source_paths = Array[String](["", "sourceRequest", "convertedRequest", "source"])
 
-[node name="ResponseTemplate" parent="HBoxContainer/TabContainer" instance=ExtResource("6_pg3m3")]
+[node name="ResponseTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("6_pg3m3")]
+visible = false
 layout_mode = 2
+scope = NodePath("../ResponseScope")
+renderOutput = NodePath("../RenderedResponse")
 
-[node name="ErrorTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("template") instance=ExtResource("6_pg3m3")]
+[node name="ErrorTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("6_pg3m3")]
+visible = false
 layout_mode = 2
-template = NodePath("../ResponseTemplate/CodeEditTemplate")
+scope = NodePath("../ResponseScope")
+renderOutput = NodePath("../RenderedResponse")
 
 [node name="RenderedResponse" parent="HBoxContainer/TabContainer" instance=ExtResource("7_ofv8o")]
 visible = false

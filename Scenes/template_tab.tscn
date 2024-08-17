@@ -3,7 +3,6 @@
 [ext_resource type="Script" path="res://Scenes/TemplateTab.gd" id="1_axx7h"]
 
 [node name="TemplateTab" type="HBoxContainer" node_paths=PackedStringArray("template")]
-visible = false
 script = ExtResource("1_axx7h")
 template = NodePath("CodeEditTemplate")
 

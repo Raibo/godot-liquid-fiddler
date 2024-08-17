@@ -11,9 +11,13 @@ public partial class UtilAccessNode : Node
 		templateText ??= string.Empty;
 		scopeJson ??= "{}";
 
-		var scope = JsonUtil.Parse(scopeJson);
+		var scopeParseResult = JsonUtil.Parse(scopeJson);
 
-		var result = LiquidUtil.Render(templateText, new Dictionary<string, object?>());
+		var scope = scopeParseResult.IsSuccess
+			? scopeParseResult.Value
+			: new();
+
+		var result = LiquidUtil.Render(templateText, scope);
 
 		if (result.IsFailure)
 			return string.Join('\n', result.Error);

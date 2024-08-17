@@ -2,7 +2,6 @@ extends Control
 
 class_name JsonEdit
 
-@export var scope_path: String
 signal text_changed()
 
 var text: String:

@@ -14,6 +14,8 @@ public static class LiquidUtil
 {
     public static Result<string, List<string>> Render(string templateText, Dictionary<string, object?> scope)
     {
+        scope ??= new();
+
         var template = Template.Parse(templateText);
         var hash = Hash.FromDictionary(scope);
         var renderedText = template.Render(hash, CultureInfo.InvariantCulture);
