@@ -14,13 +14,11 @@ func _ready():
 			sources[i].text_set.connect(update_merged_json)
 
 func update_merged_json():
-	var jsons: Array[String]
-	var paths: Array[String]
+	var jsons: Array[String] = []
+	var paths: Array[String] = []
 	
 	for i in sources.size():
 		jsons.append(sources[i].text)
-	
-	for i in sources.size():
 		paths.append(source_paths[i] if i < source_paths.size() else "")
 	
 	var merged_json = %UtilAccessNode.call("MergeJsons", jsons, paths)
