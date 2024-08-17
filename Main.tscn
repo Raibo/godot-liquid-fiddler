@@ -214,9 +214,4 @@ script = ExtResource("10_3awm5")
 
 [connection signal="tab_pressed" from="HBoxContainer/VTabButtonsContainer" to="HBoxContainer/TabContainer" method="set_active"]
 [connection signal="tab_selected" from="HBoxContainer/TabContainer" to="HBoxContainer/VTabButtonsContainer" method="set_toggle"]
-[connection signal="text_changed" from="HBoxContainer/TabContainer/GroupConfig" to="HBoxContainer/TabContainer/MergedConfig" method="update_merged_json"]
-[connection signal="text_changed" from="HBoxContainer/TabContainer/EndpointConfig" to="HBoxContainer/TabContainer/MergedConfig" method="update_merged_json"]
-[connection signal="text_changed" from="HBoxContainer/TabContainer/MergedConfig" to="HBoxContainer/TabContainer/RequestScope" method="update_merged_json"]
-[connection signal="text_set" from="HBoxContainer/TabContainer/MergedConfig" to="HBoxContainer/TabContainer/RequestScope" method="update_merged_json"]
-[connection signal="text_changed" from="HBoxContainer/TabContainer/SourceRequest" to="HBoxContainer/TabContainer/RequestScope" method="update_merged_json"]
 [connection signal="pressed" from="Button" to="Button" method="test"]
