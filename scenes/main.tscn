@@ -28,15 +28,6 @@ script = ExtResource("1_blnvf")
 unique_name_in_owner = true
 script = ExtResource("2_cgwww")
 
-[node name="SelectFolderDialog" type="FileDialog" parent="."]
-unique_name_in_owner = true
-title = "Open a Directory"
-initial_position = 2
-size = Vector2i(600, 400)
-ok_button_text = "Select Current Folder"
-file_mode = 2
-access = 2
-
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_direction = 2
 layout_mode = 1
@@ -149,12 +140,10 @@ tab_index = 12
 [node name="TabContainer" type="TabContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-current_tab = 6
 tabs_visible = false
 script = ExtResource("6_bmljk")
 
 [node name="SettingsTab" parent="HBoxContainer/TabContainer" instance=ExtResource("7_5jgh4")]
-visible = false
 layout_mode = 2
 
 [node name="GroupConfig" parent="HBoxContainer/TabContainer" instance=ExtResource("8_dstrs")]
@@ -182,6 +171,7 @@ sources = [NodePath("../MergedConfig"), NodePath("../SourceRequest")]
 source_paths = Array[String](["", "source"])
 
 [node name="RequestTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("10_y6us4")]
+visible = false
 layout_mode = 2
 scope = NodePath("../RequestScope")
 renderOutput = NodePath("../RenderedRequest")

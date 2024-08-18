@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://babd1sraci6li"]
 
 [ext_resource type="Script" path="res://scripts/settings_tab.gd" id="1_ldx1n"]
-[ext_resource type="Script" path="res://scripts/select_folder.gd" id="2_jj6ma"]
+[ext_resource type="PackedScene" uid="uid://d0u17s06vh6xm" path="res://scenes/setting_line_folder_path.tscn" id="2_trqxk"]
 
 [node name="SettingsTab" type="VBoxContainer"]
 script = ExtResource("1_ldx1n")
@@ -10,26 +10,5 @@ script = ExtResource("1_ldx1n")
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="DefFolderPathLine" type="HBoxContainer" parent="."]
+[node name="SettingLineFolderPath" parent="." instance=ExtResource("2_trqxk")]
 layout_mode = 2
-
-[node name="Spacer" type="Control" parent="DefFolderPathLine"]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-
-[node name="DefaultFolder" type="Label" parent="DefFolderPathLine"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-text = "Default Browse Folder"
-
-[node name="DefaultFolderInput" type="LineEdit" parent="DefFolderPathLine"]
-custom_minimum_size = Vector2(500, 0)
-layout_mode = 2
-
-[node name="SelectFolder" type="Button" parent="DefFolderPathLine" node_paths=PackedStringArray("node_to_write_path")]
-layout_mode = 2
-text = "Select Folder"
-script = ExtResource("2_jj6ma")
-node_to_write_path = NodePath("../DefaultFolderInput")
-
-[connection signal="pressed" from="DefFolderPathLine/SelectFolder" to="." method="press"]
