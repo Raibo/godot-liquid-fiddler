@@ -16,6 +16,15 @@ indent_use_spaces = true
 indent_automatic = true
 auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true
+auto_brace_completion_pairs = {
+"\"": "\"",
+"'": "'",
+"(": ")",
+"[": "]",
+"{": "}",
+"{% ": " %",
+"{{ ": " "
+}
 
 [node name="CodeEditRender" type="CodeEdit" parent="."]
 layout_mode = 2

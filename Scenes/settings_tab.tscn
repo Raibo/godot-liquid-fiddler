@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://babd1sraci6li"]
+
+[ext_resource type="Script" path="res://Scenes/SelectFolder.gd" id="1_5d6aq"]
+[ext_resource type="Script" path="res://Scenes/settings_tab.gd" id="1_ldx1n"]
+
+[node name="SettingsTab" type="VBoxContainer"]
+script = ExtResource("1_ldx1n")
+
+[node name="Spacer" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="DefFolderPathLine" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="DefFolderPathLine"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="DefaultFolder" type="Label" parent="DefFolderPathLine"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Default Browse Folder"
+
+[node name="DefaultFolderInput" type="LineEdit" parent="DefFolderPathLine"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+
+[node name="SelectFolder" type="Button" parent="DefFolderPathLine" node_paths=PackedStringArray("node_to_write_path")]
+layout_mode = 2
+text = "Select Folder"
+script = ExtResource("1_5d6aq")
+node_to_write_path = NodePath("../DefaultFolderInput")
+
+[connection signal="pressed" from="DefFolderPathLine/SelectFolder" to="." method="press"]

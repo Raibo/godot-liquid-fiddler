@@ -20,7 +20,7 @@ func update_merged_json():
 	for i in sources.size():
 		jsons.append(sources[i].text)
 		paths.append(source_paths[i] if i < source_paths.size() else "")
-	
+
 	var merged_json = %UtilAccessNode.call("MergeJsons", jsons, paths)
 	text = merged_json if merged_json else ""
-
+	

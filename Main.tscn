@@ -1,12 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://livgtmaj2lyh"]
+[gd_scene load_steps=12 format=3 uid="uid://livgtmaj2lyh"]
 
 [ext_resource type="Texture2D" uid="uid://dqubc6nut57e0" path="res://Arrow1.png" id="1_cski1"]
 [ext_resource type="Script" path="res://UtilAccessNode.cs" id="1_gmv7o"]
 [ext_resource type="Script" path="res://TabContainer.gd" id="1_s02ko"]
+[ext_resource type="Script" path="res://FileAccessNode.cs" id="2_a5xrd"]
 [ext_resource type="Script" path="res://VTabButtonsContainer.gd" id="2_gqut8"]
 [ext_resource type="PackedScene" uid="uid://wf3xmk3ji1pu" path="res://Scenes/tab_button.tscn" id="2_q8d5s"]
 [ext_resource type="PackedScene" uid="uid://c51hemtuxqr6p" path="res://Scenes/json_edit2.tscn" id="6_j6rqq"]
 [ext_resource type="PackedScene" uid="uid://ie34vkifem4q" path="res://Scenes/template_tab.tscn" id="6_pg3m3"]
+[ext_resource type="PackedScene" uid="uid://babd1sraci6li" path="res://Scenes/settings_tab.tscn" id="7_8ljmm"]
 [ext_resource type="PackedScene" uid="uid://cvrekp5o3cfa7" path="res://Scenes/merged_json.tscn" id="7_ofv8o"]
 [ext_resource type="Script" path="res://Button.gd" id="10_3awm5"]
 
@@ -21,6 +23,19 @@ grow_vertical = 2
 [node name="UtilAccessNode" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("1_gmv7o")
+
+[node name="FileAccessNode" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_a5xrd")
+
+[node name="SelectFolderDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Open a Directory"
+initial_position = 2
+size = Vector2i(600, 400)
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_direction = 2
@@ -134,14 +149,13 @@ tab_index = 12
 [node name="TabContainer" type="TabContainer" parent="HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-current_tab = 3
+current_tab = 6
 tabs_visible = false
 script = ExtResource("1_s02ko")
 
-[node name="SettingsPlaceholder" type="Label" parent="HBoxContainer/TabContainer"]
+[node name="SettingsTab" parent="HBoxContainer/TabContainer" instance=ExtResource("7_8ljmm")]
 visible = false
 layout_mode = 2
-text = "Nope"
 
 [node name="GroupConfig" parent="HBoxContainer/TabContainer" instance=ExtResource("6_j6rqq")]
 visible = false
@@ -152,6 +166,7 @@ visible = false
 layout_mode = 2
 
 [node name="MergedConfig" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources") instance=ExtResource("7_ofv8o")]
+visible = false
 layout_mode = 2
 sources = [NodePath("../GroupConfig"), NodePath("../EndpointConfig")]
 source_paths = Array[String](["", ""])
@@ -167,7 +182,6 @@ sources = [NodePath("../MergedConfig"), NodePath("../SourceRequest")]
 source_paths = Array[String](["", "source"])
 
 [node name="RequestTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("6_pg3m3")]
-visible = false
 layout_mode = 2
 scope = NodePath("../RequestScope")
 renderOutput = NodePath("../RenderedRequest")
