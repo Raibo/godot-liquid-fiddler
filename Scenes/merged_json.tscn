@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cvrekp5o3cfa7"]
 
-[ext_resource type="Script" path="res://Scenes/MergedJson.gd" id="1_86sct"]
+[ext_resource type="Script" path="res://scripts/merged_json.gd" id="1_qllas"]
 
 [node name="CodeEdit" type="CodeEdit"]
 size_flags_horizontal = 3
@@ -14,4 +14,4 @@ indent_use_spaces = true
 indent_automatic = true
 auto_brace_completion_enabled = true
 auto_brace_completion_highlight_matching = true
-script = ExtResource("1_86sct")
+script = ExtResource("1_qllas")

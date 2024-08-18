@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://babd1sraci6li"]
 
-[ext_resource type="Script" path="res://Scenes/SelectFolder.gd" id="1_5d6aq"]
-[ext_resource type="Script" path="res://Scenes/settings_tab.gd" id="1_ldx1n"]
+[ext_resource type="Script" path="res://scripts/settings_tab.gd" id="1_ldx1n"]
+[ext_resource type="Script" path="res://scripts/select_folder.gd" id="2_jj6ma"]
 
 [node name="SettingsTab" type="VBoxContainer"]
 script = ExtResource("1_ldx1n")
@@ -29,7 +29,7 @@ layout_mode = 2
 [node name="SelectFolder" type="Button" parent="DefFolderPathLine" node_paths=PackedStringArray("node_to_write_path")]
 layout_mode = 2
 text = "Select Folder"
-script = ExtResource("1_5d6aq")
+script = ExtResource("2_jj6ma")
 node_to_write_path = NodePath("../DefaultFolderInput")
 
 [connection signal="pressed" from="DefFolderPathLine/SelectFolder" to="." method="press"]

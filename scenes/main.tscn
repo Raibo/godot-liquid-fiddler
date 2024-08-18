@@ -1,16 +1,16 @@
 [gd_scene load_steps=12 format=3 uid="uid://livgtmaj2lyh"]
 
-[ext_resource type="Texture2D" uid="uid://dqubc6nut57e0" path="res://Arrow1.png" id="1_cski1"]
-[ext_resource type="Script" path="res://UtilAccessNode.cs" id="1_gmv7o"]
-[ext_resource type="Script" path="res://TabContainer.gd" id="1_s02ko"]
-[ext_resource type="Script" path="res://FileAccessNode.cs" id="2_a5xrd"]
-[ext_resource type="Script" path="res://VTabButtonsContainer.gd" id="2_gqut8"]
-[ext_resource type="PackedScene" uid="uid://wf3xmk3ji1pu" path="res://Scenes/tab_button.tscn" id="2_q8d5s"]
-[ext_resource type="PackedScene" uid="uid://c51hemtuxqr6p" path="res://Scenes/json_edit2.tscn" id="6_j6rqq"]
-[ext_resource type="PackedScene" uid="uid://ie34vkifem4q" path="res://Scenes/template_tab.tscn" id="6_pg3m3"]
-[ext_resource type="PackedScene" uid="uid://babd1sraci6li" path="res://Scenes/settings_tab.tscn" id="7_8ljmm"]
-[ext_resource type="PackedScene" uid="uid://cvrekp5o3cfa7" path="res://Scenes/merged_json.tscn" id="7_ofv8o"]
-[ext_resource type="Script" path="res://Button.gd" id="10_3awm5"]
+[ext_resource type="Script" path="res://scripts_cs/UtilAccessNode.cs" id="1_blnvf"]
+[ext_resource type="Script" path="res://scripts_cs/FileAccessNode.cs" id="2_cgwww"]
+[ext_resource type="Texture2D" uid="uid://dqubc6nut57e0" path="res://arrow1.png" id="3_pfcc3"]
+[ext_resource type="Script" path="res://scripts/v_tab_button_container.gd" id="4_7xpol"]
+[ext_resource type="PackedScene" uid="uid://wf3xmk3ji1pu" path="res://scenes/tab_button.tscn" id="5_jx4pw"]
+[ext_resource type="Script" path="res://scripts/tab_container.gd" id="6_bmljk"]
+[ext_resource type="PackedScene" uid="uid://babd1sraci6li" path="res://scenes/settings_tab.tscn" id="7_5jgh4"]
+[ext_resource type="PackedScene" uid="uid://c51hemtuxqr6p" path="res://scenes/json_edit2.tscn" id="8_dstrs"]
+[ext_resource type="PackedScene" uid="uid://cvrekp5o3cfa7" path="res://scenes/merged_json.tscn" id="9_mq753"]
+[ext_resource type="PackedScene" uid="uid://ie34vkifem4q" path="res://scenes/template_tab.tscn" id="10_y6us4"]
+[ext_resource type="Script" path="res://scripts/button.gd" id="11_cq5ae"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -22,11 +22,11 @@ grow_vertical = 2
 
 [node name="UtilAccessNode" type="Node" parent="."]
 unique_name_in_owner = true
-script = ExtResource("1_gmv7o")
+script = ExtResource("1_blnvf")
 
 [node name="FileAccessNode" type="Node" parent="."]
 unique_name_in_owner = true
-script = ExtResource("2_a5xrd")
+script = ExtResource("2_cgwww")
 
 [node name="SelectFolderDialog" type="FileDialog" parent="."]
 unique_name_in_owner = true
@@ -54,20 +54,20 @@ layout_mode = 2
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainerImages"]
 layout_mode = 2
 size_flags_horizontal = 0
-texture = ExtResource("1_cski1")
+texture = ExtResource("3_pfcc3")
 stretch_mode = 2
 
 [node name="VTabButtonsContainer" type="VBoxContainer" parent="HBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-script = ExtResource("2_gqut8")
+script = ExtResource("4_7xpol")
 
 [node name="LabelOptions" type="Label" parent="HBoxContainer/VTabButtonsContainer"]
 layout_mode = 2
 text = "Settings"
 horizontal_alignment = 1
 
-[node name="ButtonSettings" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+[node name="ButtonSettings" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
 layout_mode = 2
 text = "Settings"
 
@@ -76,17 +76,17 @@ layout_mode = 2
 text = "Configs"
 horizontal_alignment = 1
 
-[node name="ButtonConfGroup" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+[node name="ButtonConfGroup" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
 layout_mode = 2
 text = "Group Config"
 tab_index = 1
 
-[node name="ButtonConfEndp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+[node name="ButtonConfEndp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
 layout_mode = 2
 text = "Endpoint Config"
 tab_index = 2
 
-[node name="ButtonConfMerg" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+[node name="ButtonConfMerg" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
 layout_mode = 2
 text = "Merged Config"
 tab_index = 3
@@ -96,22 +96,22 @@ layout_mode = 2
 text = "Request"
 horizontal_alignment = 1
 
-[node name="ButtonSourceReq" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+[node name="ButtonSourceReq" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
 layout_mode = 2
 text = "Source Request"
 tab_index = 4
 
-[node name="ButtonScopeReq" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+[node name="ButtonScopeReq" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
 layout_mode = 2
 text = "Request Scope"
 tab_index = 5
 
-[node name="ButtonTemplateReq" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+[node name="ButtonTemplateReq" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
 layout_mode = 2
 text = "Request Template"
 tab_index = 6
 
-[node name="ButtonRenderReq" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+[node name="ButtonRenderReq" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
 layout_mode = 2
 text = "Rendered Request"
 tab_index = 7
@@ -121,27 +121,27 @@ layout_mode = 2
 text = "Response"
 horizontal_alignment = 1
 
-[node name="ButtonSourceResp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+[node name="ButtonSourceResp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
 layout_mode = 2
 text = "Source Response"
 tab_index = 8
 
-[node name="ButtonScopeResp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+[node name="ButtonScopeResp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
 layout_mode = 2
 text = "Response Scope"
 tab_index = 9
 
-[node name="ButtonTemplateResp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+[node name="ButtonTemplateResp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
 layout_mode = 2
 text = "Response Template"
 tab_index = 10
 
-[node name="ButtonTemplateErr" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+[node name="ButtonTemplateErr" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
 layout_mode = 2
 text = "Error Template"
 tab_index = 11
 
-[node name="ButtonRenderResp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("2_q8d5s")]
+[node name="ButtonRenderResp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
 layout_mode = 2
 text = "Rendered Response"
 tab_index = 12
@@ -151,68 +151,68 @@ layout_mode = 2
 size_flags_horizontal = 3
 current_tab = 6
 tabs_visible = false
-script = ExtResource("1_s02ko")
+script = ExtResource("6_bmljk")
 
-[node name="SettingsTab" parent="HBoxContainer/TabContainer" instance=ExtResource("7_8ljmm")]
+[node name="SettingsTab" parent="HBoxContainer/TabContainer" instance=ExtResource("7_5jgh4")]
 visible = false
 layout_mode = 2
 
-[node name="GroupConfig" parent="HBoxContainer/TabContainer" instance=ExtResource("6_j6rqq")]
+[node name="GroupConfig" parent="HBoxContainer/TabContainer" instance=ExtResource("8_dstrs")]
 visible = false
 layout_mode = 2
 
-[node name="EndpointConfig" parent="HBoxContainer/TabContainer" instance=ExtResource("6_j6rqq")]
+[node name="EndpointConfig" parent="HBoxContainer/TabContainer" instance=ExtResource("8_dstrs")]
 visible = false
 layout_mode = 2
 
-[node name="MergedConfig" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources") instance=ExtResource("7_ofv8o")]
+[node name="MergedConfig" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources") instance=ExtResource("9_mq753")]
 visible = false
 layout_mode = 2
 sources = [NodePath("../GroupConfig"), NodePath("../EndpointConfig")]
 source_paths = Array[String](["", ""])
 
-[node name="SourceRequest" parent="HBoxContainer/TabContainer" instance=ExtResource("6_j6rqq")]
+[node name="SourceRequest" parent="HBoxContainer/TabContainer" instance=ExtResource("8_dstrs")]
 visible = false
 layout_mode = 2
 
-[node name="RequestScope" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources") instance=ExtResource("7_ofv8o")]
+[node name="RequestScope" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources") instance=ExtResource("9_mq753")]
 visible = false
 layout_mode = 2
 sources = [NodePath("../MergedConfig"), NodePath("../SourceRequest")]
 source_paths = Array[String](["", "source"])
 
-[node name="RequestTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("6_pg3m3")]
+[node name="RequestTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("10_y6us4")]
 layout_mode = 2
 scope = NodePath("../RequestScope")
 renderOutput = NodePath("../RenderedRequest")
 
-[node name="RenderedRequest" parent="HBoxContainer/TabContainer" instance=ExtResource("7_ofv8o")]
+[node name="RenderedRequest" parent="HBoxContainer/TabContainer" instance=ExtResource("9_mq753")]
 visible = false
 layout_mode = 2
 
-[node name="SourceResponse" parent="HBoxContainer/TabContainer" instance=ExtResource("6_j6rqq")]
+[node name="SourceResponse" parent="HBoxContainer/TabContainer" instance=ExtResource("8_dstrs")]
 visible = false
 layout_mode = 2
 
-[node name="ResponseScope" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources") instance=ExtResource("7_ofv8o")]
+[node name="ResponseScope" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources") instance=ExtResource("9_mq753")]
 visible = false
 layout_mode = 2
 sources = [NodePath("../MergedConfig"), NodePath("../SourceRequest"), NodePath("../RenderedRequest"), NodePath("../SourceResponse")]
 source_paths = Array[String](["", "sourceRequest", "convertedRequest", "source"])
 
-[node name="ResponseTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("6_pg3m3")]
+[node name="ResponseTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("10_y6us4")]
 visible = false
 layout_mode = 2
 scope = NodePath("../ResponseScope")
 renderOutput = NodePath("../RenderedResponse")
 
-[node name="ErrorTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("6_pg3m3")]
+[node name="ErrorTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("10_y6us4")]
 visible = false
 layout_mode = 2
 scope = NodePath("../ResponseScope")
 renderOutput = NodePath("../RenderedResponse")
 
-[node name="RenderedResponse" parent="HBoxContainer/TabContainer" instance=ExtResource("7_ofv8o")]
+[node name="RenderedResponse" parent="HBoxContainer/TabContainer" instance=ExtResource("9_mq753")]
 visible = false
 layout_mode = 2
 
@@ -224,7 +224,7 @@ offset_top = 4.0
 offset_right = 75.0
 offset_bottom = 25.0
 text = "Go!"
-script = ExtResource("10_3awm5")
+script = ExtResource("11_cq5ae")
 
 [connection signal="tab_pressed" from="HBoxContainer/VTabButtonsContainer" to="HBoxContainer/TabContainer" method="set_active"]
 [connection signal="tab_selected" from="HBoxContainer/TabContainer" to="HBoxContainer/VTabButtonsContainer" method="set_toggle"]
