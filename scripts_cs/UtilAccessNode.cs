@@ -1,6 +1,7 @@
 using Godot;
 using LiquidFiddle.NonScriptCode;
 using System.Collections.Generic;
+using System.IO;
 
 #nullable enable
 
@@ -66,6 +67,15 @@ public partial class UtilAccessNode : Node
 
 		return JsonUtil.Serialize(dataResult.Value);
 	}
+
+	private string GetRelativePath(string execPath, string absolutePath) =>
+		Path.GetRelativePath(execPath, absolutePath).Replace('\\', '/');
+
+	private string GetAbsolutePath(string execPath, string relativePath) =>
+		Path.Combine(execPath, relativePath).Replace('\\', '/');
+
+	private bool FolderExists(string path) =>
+		Directory.Exists(path);
 
 	private void InsertDictionary(Dictionary<string, object?> destination, Dictionary<string, object?> source)
 	{

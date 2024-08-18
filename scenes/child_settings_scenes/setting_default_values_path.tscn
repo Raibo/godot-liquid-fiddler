@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c3hkjwxwggnev"]
+
+[ext_resource type="PackedScene" uid="uid://dvoayd5u5ievp" path="res://scenes/setting_line_file_path.tscn" id="1_7ro3o"]
+
+[node name="SettingFileFolderPath" instance=ExtResource("1_7ro3o")]
+
+[node name="FileDialog" parent="." index="1"]
+filters = PackedStringArray("*.json")
+
+[node name="SettingLabel" parent="." index="3"]
+text = "Default Values Path"

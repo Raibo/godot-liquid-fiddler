@@ -216,6 +216,7 @@ offset_bottom = 25.0
 text = "Go!"
 script = ExtResource("11_cq5ae")
 
+[connection signal="LoadedSettings" from="FileAccessNode" to="HBoxContainer/TabContainer/SettingsTab" method="load_settings"]
 [connection signal="tab_pressed" from="HBoxContainer/VTabButtonsContainer" to="HBoxContainer/TabContainer" method="set_active"]
 [connection signal="tab_selected" from="HBoxContainer/TabContainer" to="HBoxContainer/VTabButtonsContainer" method="set_toggle"]
 [connection signal="pressed" from="Button" to="Button" method="test"]

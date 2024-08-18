@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://babd1sraci6li"]
+[gd_scene load_steps=4 format=3 uid="uid://babd1sraci6li"]
 
 [ext_resource type="Script" path="res://scripts/settings_tab.gd" id="1_ldx1n"]
-[ext_resource type="PackedScene" uid="uid://d0u17s06vh6xm" path="res://scenes/setting_line_folder_path.tscn" id="2_trqxk"]
+[ext_resource type="PackedScene" uid="uid://dv476ywbeolrf" path="res://scenes/child_settings_scenes/setting_default_browse_folder.tscn" id="2_te1im"]
+[ext_resource type="PackedScene" uid="uid://c3hkjwxwggnev" path="res://scenes/child_settings_scenes/setting_default_values_path.tscn" id="3_7uvdi"]
 
 [node name="SettingsTab" type="VBoxContainer"]
 script = ExtResource("1_ldx1n")
@@ -10,5 +11,13 @@ script = ExtResource("1_ldx1n")
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="SettingLineFolderPath" parent="." instance=ExtResource("2_trqxk")]
+[node name="DefaultFolder" parent="." instance=ExtResource("2_te1im")]
 layout_mode = 2
+setting_name = "DefaultFolderPath"
+
+[node name="DefaultValuesFile" parent="." instance=ExtResource("3_7uvdi")]
+layout_mode = 2
+setting_name = "DefaultValuesPath"
+
+[connection signal="setting_changed" from="DefaultFolder" to="." method="update_setting"]
+[connection signal="setting_changed" from="DefaultValuesFile" to="." method="update_setting"]

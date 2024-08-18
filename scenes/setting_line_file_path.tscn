@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=3 uid="uid://dvoayd5u5ievp"]
+
+[ext_resource type="Script" path="res://scripts/setting_line_text.gd" id="1_ehoa8"]
+[ext_resource type="Script" path="res://scripts/button_open_file_dialog.gd" id="2_q0vcn"]
+[ext_resource type="Script" path="res://scripts_cs/UtilAccessNode.cs" id="2_xrfl0"]
+
+[node name="SettingFileFolderPath" type="HBoxContainer"]
+script = ExtResource("1_ehoa8")
+
+[node name="UtilAccessNode" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_xrfl0")
+
+[node name="FileDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Open a File"
+initial_position = 2
+size = Vector2i(800, 400)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+
+[node name="Spacer" type="Control" parent="."]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="SettingLabel" type="Label" parent="."]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Setting Display Name"
+
+[node name="TextPath" type="LineEdit" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+
+[node name="SelectFile" type="Button" parent="."]
+layout_mode = 2
+text = "Select File"
+script = ExtResource("2_q0vcn")
+
+[connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
+[connection signal="text_changed" from="TextPath" to="." method="_on_file_dialog_file_selected"]
+[connection signal="pressed" from="SelectFile" to="SelectFile" method="open_file_dialog"]
