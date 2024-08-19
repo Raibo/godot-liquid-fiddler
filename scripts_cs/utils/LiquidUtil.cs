@@ -19,45 +19,48 @@ public static class LiquidUtil
 
     private static Type _templateType;
     private static Type _hashType;
-    private static Type _syntaxCompEnumType;
 
     private static MethodInfo _templateParseMethod;
     private static MethodInfo _templateRenderMethod;
     private static PropertyInfo _templateErrorsProp;
     private static MethodInfo _hashFromDictionaryMethod;
-    private static object _syntaxCompValue;
 
     static LiquidUtil()
     {
         _templateType = typeof(Template);
         _hashType = typeof(Hash);
-        _syntaxCompEnumType = typeof(SyntaxCompatibility);
 
         RebindToNewTypes();
     }
 
     private static void RebindToNewTypes()
     {
-        _templateParseMethod = _templateType.GetMethod("Parse", BindingFlags.Public | BindingFlags.Static, new[] { typeof(string), _syntaxCompEnumType })!;
+        _templateParseMethod = _templateType.GetMethod("Parse", BindingFlags.Public | BindingFlags.Static, new[] { typeof(string) })!;
         _templateRenderMethod = _templateType.GetMethod("Render", BindingFlags.Public | BindingFlags.Instance, new[] { _hashType, typeof(IFormatProvider) })!;
         _templateErrorsProp = _templateType.GetProperty("Errors", BindingFlags.Public | BindingFlags.Instance)!;
         _hashFromDictionaryMethod = _hashType.GetMethod("FromDictionary", BindingFlags.Public | BindingFlags.Static)!;
-        _syntaxCompValue = Enum.ToObject(_syntaxCompEnumType, 200);
     }
 
     public static Result<string, List<string>> Render(string templateText, Dictionary<string, object?> scope)
     {
         scope ??= new();
 
-        var template = _templateParseMethod.Invoke(null, new object[] { templateText, _syntaxCompValue });
-        var hash = _hashFromDictionaryMethod.Invoke(null, new object[] { scope });
-        var renderedText = _templateRenderMethod.Invoke(template, new object[] { hash!, CultureInfo.InvariantCulture }) as string;
-        var renderErrors = _templateErrorsProp.GetValue(template) as List<Exception>;
+        try
+        {
+            var template = _templateParseMethod.Invoke(null, new object[] { templateText });
+            var hash = _hashFromDictionaryMethod.Invoke(null, new object[] { scope });
+            var renderedText = _templateRenderMethod.Invoke(template, new object[] { hash!, CultureInfo.InvariantCulture }) as string;
+            var renderErrors = _templateErrorsProp.GetValue(template) as List<Exception>;
 
-        if (renderErrors!.Any())
-            return renderErrors!.Select(e => e.Message).ToList();
+            if (renderErrors!.Any())
+                return renderErrors!.Select(e => e.Message).ToList();
 
-        return renderedText!;
+            return renderedText!;
+        }
+        catch(Exception ex)
+        {
+            return ex.InnerException.Message;
+        }
     }
 
     public static void RegisterFilter(Type filterContainingClass)
@@ -116,7 +119,6 @@ public static class LiquidUtil
         {
             _templateType = assembly.GetType("DotLiquid.Template")!;
             _hashType = assembly.GetType("DotLiquid.Hash")!;
-            _syntaxCompEnumType = assembly.GetType("DotLiquid.SyntaxCompatibility")!;
             RebindToNewTypes();
         }
 
