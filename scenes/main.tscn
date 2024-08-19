@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://livgtmaj2lyh"]
+[gd_scene load_steps=13 format=3 uid="uid://livgtmaj2lyh"]
 
 [ext_resource type="Script" path="res://scripts_cs/UtilAccessNode.cs" id="1_blnvf"]
 [ext_resource type="Script" path="res://scripts_cs/FileAccessNode.cs" id="2_cgwww"]
 [ext_resource type="Texture2D" uid="uid://dqubc6nut57e0" path="res://arrow1.png" id="3_pfcc3"]
 [ext_resource type="Script" path="res://scripts/v_tab_button_container.gd" id="4_7xpol"]
 [ext_resource type="PackedScene" uid="uid://wf3xmk3ji1pu" path="res://scenes/tab_button.tscn" id="5_jx4pw"]
+[ext_resource type="PackedScene" uid="uid://dnpl01g732uml" path="res://scenes/save_load_line.tscn" id="6_8a1fc"]
 [ext_resource type="Script" path="res://scripts/tab_container.gd" id="6_bmljk"]
 [ext_resource type="PackedScene" uid="uid://babd1sraci6li" path="res://scenes/settings_tab.tscn" id="7_5jgh4"]
 [ext_resource type="PackedScene" uid="uid://c51hemtuxqr6p" path="res://scenes/json_edit2.tscn" id="8_dstrs"]
@@ -27,6 +28,25 @@ script = ExtResource("1_blnvf")
 [node name="FileAccessNode" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("2_cgwww")
+
+[node name="SaveAsDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Save As"
+initial_position = 2
+size = Vector2i(800, 400)
+ok_button_text = "Save"
+access = 2
+filters = PackedStringArray("*.json")
+
+[node name="LoadDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+title = "Open a File"
+initial_position = 2
+size = Vector2i(800, 400)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+filters = PackedStringArray("*.json")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_direction = 2
@@ -61,6 +81,9 @@ horizontal_alignment = 1
 [node name="ButtonSettings" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
 layout_mode = 2
 text = "Settings"
+
+[node name="SaveLoadLine" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("6_8a1fc")]
+layout_mode = 2
 
 [node name="LabelConfigs" type="Label" parent="HBoxContainer/VTabButtonsContainer"]
 layout_mode = 2
@@ -138,6 +161,7 @@ text = "Rendered Response"
 tab_index = 12
 
 [node name="TabContainer" type="TabContainer" parent="HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 tabs_visible = false
@@ -149,10 +173,12 @@ layout_mode = 2
 [node name="GroupConfig" parent="HBoxContainer/TabContainer" instance=ExtResource("8_dstrs")]
 visible = false
 layout_mode = 2
+save_field_name = "GroupConfig"
 
 [node name="EndpointConfig" parent="HBoxContainer/TabContainer" instance=ExtResource("8_dstrs")]
 visible = false
 layout_mode = 2
+save_field_name = "EndpointConfig"
 
 [node name="MergedConfig" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources") instance=ExtResource("9_mq753")]
 visible = false
@@ -163,6 +189,7 @@ source_paths = Array[String](["", ""])
 [node name="SourceRequest" parent="HBoxContainer/TabContainer" instance=ExtResource("8_dstrs")]
 visible = false
 layout_mode = 2
+save_field_name = "SourceRequest"
 
 [node name="RequestScope" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources") instance=ExtResource("9_mq753")]
 visible = false
@@ -175,6 +202,7 @@ visible = false
 layout_mode = 2
 scope = NodePath("../RequestScope")
 renderOutput = NodePath("../RenderedRequest")
+save_field_name = "RequestTemplate"
 
 [node name="RenderedRequest" parent="HBoxContainer/TabContainer" instance=ExtResource("9_mq753")]
 visible = false
@@ -183,6 +211,7 @@ layout_mode = 2
 [node name="SourceResponse" parent="HBoxContainer/TabContainer" instance=ExtResource("8_dstrs")]
 visible = false
 layout_mode = 2
+save_field_name = "SourceResponse"
 
 [node name="ResponseScope" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("sources") instance=ExtResource("9_mq753")]
 visible = false
@@ -195,12 +224,14 @@ visible = false
 layout_mode = 2
 scope = NodePath("../ResponseScope")
 renderOutput = NodePath("../RenderedResponse")
+save_field_name = "ResponseTemplate"
 
 [node name="ErrorTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("10_y6us4")]
 visible = false
 layout_mode = 2
 scope = NodePath("../ResponseScope")
 renderOutput = NodePath("../RenderedResponse")
+save_field_name = "ErrorTemplate"
 
 [node name="RenderedResponse" parent="HBoxContainer/TabContainer" instance=ExtResource("9_mq753")]
 visible = false
@@ -217,6 +248,8 @@ text = "Go!"
 script = ExtResource("11_cq5ae")
 
 [connection signal="LoadedSettings" from="FileAccessNode" to="HBoxContainer/TabContainer/SettingsTab" method="load_settings"]
+[connection signal="file_selected" from="SaveAsDialog" to="HBoxContainer/VTabButtonsContainer/SaveLoadLine" method="save_as"]
+[connection signal="file_selected" from="LoadDialog" to="HBoxContainer/VTabButtonsContainer/SaveLoadLine" method="load_from_file"]
 [connection signal="tab_pressed" from="HBoxContainer/VTabButtonsContainer" to="HBoxContainer/TabContainer" method="set_active"]
 [connection signal="tab_selected" from="HBoxContainer/TabContainer" to="HBoxContainer/VTabButtonsContainer" method="set_toggle"]
 [connection signal="pressed" from="Button" to="Button" method="test"]

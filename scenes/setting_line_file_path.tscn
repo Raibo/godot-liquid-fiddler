@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dvoayd5u5ievp"]
+[gd_scene load_steps=5 format=3 uid="uid://dvoayd5u5ievp"]
 
 [ext_resource type="Script" path="res://scripts/setting_line_text.gd" id="1_ehoa8"]
 [ext_resource type="Script" path="res://scripts/button_open_file_dialog.gd" id="2_q0vcn"]
 [ext_resource type="Script" path="res://scripts_cs/UtilAccessNode.cs" id="2_xrfl0"]
+[ext_resource type="Script" path="res://scripts_cs/FileAccessNode.cs" id="3_riokg"]
 
 [node name="SettingFileFolderPath" type="HBoxContainer"]
 script = ExtResource("1_ehoa8")
@@ -10,6 +11,10 @@ script = ExtResource("1_ehoa8")
 [node name="UtilAccessNode" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("2_xrfl0")
+
+[node name="FileAccessNode" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_riokg")
 
 [node name="FileDialog" type="FileDialog" parent="."]
 unique_name_in_owner = true

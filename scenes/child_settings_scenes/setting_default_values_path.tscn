@@ -2,10 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://dvoayd5u5ievp" path="res://scenes/setting_line_file_path.tscn" id="1_7ro3o"]
 
-[node name="SettingFileFolderPath" instance=ExtResource("1_7ro3o")]
+[node name="SettingDefaultValuesPath" instance=ExtResource("1_7ro3o")]
 
-[node name="FileDialog" parent="." index="1"]
+[node name="FileDialog" parent="." index="2"]
 filters = PackedStringArray("*.json")
 
-[node name="SettingLabel" parent="." index="3"]
+[node name="SettingLabel" parent="." index="4"]
 text = "Default Values Path"

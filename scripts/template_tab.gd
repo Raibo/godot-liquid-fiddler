@@ -4,8 +4,14 @@ extends HBoxContainer
 @export var template: CodeEdit
 @export var renderOutput: CodeEdit
 
+@export var save_field_name: String
+
+var text: String:
+	get: return template.text if template else ""
+	set(new_value): template.text = new_value
+
 func render():
-	var templateText = template.text if template else ""
+	var templateText = text
 	var scopeText = scope.text if scope else ""
 	var renderedText = %UtilAccessNode.call("Render", templateText, scopeText)
 	

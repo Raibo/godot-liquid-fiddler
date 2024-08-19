@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dv476ywbeolrf"]
-
-[ext_resource type="PackedScene" uid="uid://d0u17s06vh6xm" path="res://scenes/setting_line_folder_path.tscn" id="1_i7lyv"]
-
-[node name="SettingLineFolderPath" instance=ExtResource("1_i7lyv")]
-
-[node name="SettingLabel" parent="." index="2"]
-text = "Default Browse Folder"

@@ -8,8 +8,12 @@ public partial class FileAccessNode : Node
 {
     [Signal] public delegate void LoadedSettingsEventHandler(Dictionary settings);
     [Export] public Dictionary Settings { get; set; } = new();
+    [Export] public string CurrentSaveFileProp { get => CurrentSaveFile; set { } } // just for editor
 
-    private const string SettingsPath = @".\settings.json";
+    public static string CurrentSaveFile;
+
+    private const string SettingsPath = @"settings.json";
+    public string WorkingDir => Directory.GetCurrentDirectory().Replace('\\', '/');
 
     public override void _Ready()
     {
@@ -19,7 +23,11 @@ public partial class FileAccessNode : Node
     private void LoadSettings()
     {
         if (!File.Exists(SettingsPath))
-            File.WriteAllText(SettingsPath, "");
+        {
+            Settings = new Dictionary { ["DefaultFolderPath"] = WorkingDir };
+            EmitSignal(SignalName.LoadedSettings, Settings);
+            return;
+        }
 
         var text = File.ReadAllText(SettingsPath);
         var loadedSettings = JsonConvert.DeserializeObject<Dictionary<string, string>>(text);
@@ -32,6 +40,34 @@ public partial class FileAccessNode : Node
     {
         var text = JsonConvert.SerializeObject(ToCsDict(Settings), Formatting.Indented);
         File.WriteAllText(SettingsPath, text);
+    }
+
+    private bool SaveValues(Dictionary values, string path)
+    {
+        try
+        {
+            var text = JsonConvert.SerializeObject(ToCsDict(values), Formatting.Indented);
+            File.WriteAllText(path, text);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private Dictionary LoadValues(string path)
+    {
+        try
+        {
+            var text = File.ReadAllText(path);
+            var csDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(text);
+            return ToGdDict(csDict);
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     private Dictionary<string, string> ToCsDict(Dictionary gdDict)

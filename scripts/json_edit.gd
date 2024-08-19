@@ -3,6 +3,7 @@ extends Control
 class_name JsonEdit
 
 signal text_changed()
+@export var save_field_name: String
 
 var text: String:
 	set(new_value):

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://babd1sraci6li"]
 
 [ext_resource type="Script" path="res://scripts/settings_tab.gd" id="1_ldx1n"]
-[ext_resource type="PackedScene" uid="uid://dv476ywbeolrf" path="res://scenes/child_settings_scenes/setting_default_browse_folder.tscn" id="2_te1im"]
+[ext_resource type="PackedScene" uid="uid://dv476ywbeolrf" path="res://scenes/child_settings_scenes/setting_default_folder.tscn" id="2_mqqkl"]
 [ext_resource type="PackedScene" uid="uid://c3hkjwxwggnev" path="res://scenes/child_settings_scenes/setting_default_values_path.tscn" id="3_7uvdi"]
 
 [node name="SettingsTab" type="VBoxContainer"]
@@ -11,7 +11,7 @@ script = ExtResource("1_ldx1n")
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
-[node name="DefaultFolder" parent="." instance=ExtResource("2_te1im")]
+[node name="DefaultFolder" parent="." instance=ExtResource("2_mqqkl")]
 layout_mode = 2
 setting_name = "DefaultFolderPath"
 

@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnpl01g732uml"]
+
+[ext_resource type="Script" path="res://scripts/save_load_line.gd" id="1_h481v"]
+
+[node name="SaveLoadLine" type="HBoxContainer"]
+script = ExtResource("1_h481v")
+
+[node name="ButtonLoad" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Load"
+
+[node name="ButtonSaveAs" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Save As"
+
+[node name="ButtonSave" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Save"
+
+[connection signal="pressed" from="ButtonLoad" to="." method="open_load_dialog"]
+[connection signal="pressed" from="ButtonSaveAs" to="." method="open_save_as_dialog"]
+[connection signal="pressed" from="ButtonSave" to="." method="save"]

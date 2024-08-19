@@ -21,10 +21,11 @@ func _on_file_dialog_dir_selected(dir_path):
 
 
 func _on_file_dialog_file_selected(file_path):
-	var def_path = get_setting("DefaultFolderPath")
-	var base_path = def_path if %UtilAccessNode.call("FolderExists", def_path) else exec_path
-	var relative_file_path = %UtilAccessNode.call("GetRelativePath", base_path, file_path)
-	%TextPath.text = relative_file_path
+	var base_path = %FileAccessNode.get("WorkingDir")
+	
+	var relative_file_path = %UtilAccessNode.call("GetRelativePath", base_path, file_path) as String
+	
+	%TextPath.text = file_path if relative_file_path.begins_with("..") else relative_file_path
 	setting_changed.emit(setting_name, relative_file_path)
 
 

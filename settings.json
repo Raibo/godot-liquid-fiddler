@@ -1,4 +1,4 @@
 {
   "DefaultFolderPath": "C:/Coding/Godot/Projects",
-  "DefaultValuesPath": "../Engine/GodotSharp/Tools/GodotTools.deps.json"
+  "DefaultValuesPath": "settings.json"
 }
