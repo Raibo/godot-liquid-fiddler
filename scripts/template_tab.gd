@@ -7,8 +7,11 @@ extends HBoxContainer
 @export var save_field_name: String
 
 var text: String:
-	get: return template.text if template else ""
-	set(new_value): template.text = new_value
+	get:
+		return template.text if template else ""
+	set(new_value):
+		template.text = new_value
+		render()
 
 func render():
 	var templateText = text
@@ -18,4 +21,5 @@ func render():
 	if (renderedText is String):
 		if (renderOutput):
 			renderOutput.text = renderedText
+		
 		$CodeEditRender.text = renderedText
