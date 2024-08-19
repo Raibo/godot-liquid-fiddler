@@ -240,7 +240,6 @@ visible = false
 layout_mode = 2
 
 [node name="Button" type="Button" parent="."]
-visible = false
 layout_mode = 0
 offset_left = 3.0
 offset_top = 4.0
