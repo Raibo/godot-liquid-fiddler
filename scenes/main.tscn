@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts_cs/UtilAccessNode.cs" id="1_blnvf"]
 [ext_resource type="Script" path="res://scripts_cs/FileAccessNode.cs" id="2_cgwww"]
-[ext_resource type="Texture2D" uid="uid://dqubc6nut57e0" path="res://arrow1.png" id="3_pfcc3"]
+[ext_resource type="Texture2D" uid="uid://bv5752kvaxwdi" path="res://arrow2.png" id="3_p3rvg"]
 [ext_resource type="Script" path="res://scripts/v_tab_button_container.gd" id="4_7xpol"]
 [ext_resource type="PackedScene" uid="uid://wf3xmk3ji1pu" path="res://scenes/tab_button.tscn" id="5_jx4pw"]
 [ext_resource type="PackedScene" uid="uid://dnpl01g732uml" path="res://scenes/save_load_line.tscn" id="6_8a1fc"]
@@ -58,14 +58,15 @@ anchor_bottom = 1.0
 [node name="VBoxContainerImages" type="VBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="HBoxContainer/VBoxContainerImages"]
-custom_minimum_size = Vector2(0, 166)
+[node name="Spacer" type="Control" parent="HBoxContainer/VBoxContainerImages"]
+custom_minimum_size = Vector2(0, 133)
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainerImages"]
 layout_mode = 2
-size_flags_horizontal = 0
-texture = ExtResource("3_pfcc3")
+size_flags_horizontal = 8
+size_flags_vertical = 0
+texture = ExtResource("3_p3rvg")
 stretch_mode = 2
 
 [node name="VTabButtonsContainer" type="VBoxContainer" parent="HBoxContainer"]
@@ -75,7 +76,7 @@ script = ExtResource("4_7xpol")
 
 [node name="LabelOptions" type="Label" parent="HBoxContainer/VTabButtonsContainer"]
 layout_mode = 2
-text = "Settings"
+text = "File"
 horizontal_alignment = 1
 
 [node name="ButtonSettings" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
@@ -145,14 +146,14 @@ layout_mode = 2
 text = "Response Scope"
 tab_index = 9
 
-[node name="ButtonTemplateResp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
-layout_mode = 2
-text = "Response Template"
-tab_index = 10
-
 [node name="ButtonTemplateErr" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
 layout_mode = 2
 text = "Error Template"
+tab_index = 10
+
+[node name="ButtonTemplateResp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
+layout_mode = 2
+text = "Response Template"
 tab_index = 11
 
 [node name="ButtonRenderResp" parent="HBoxContainer/VTabButtonsContainer" instance=ExtResource("5_jx4pw")]
@@ -220,19 +221,19 @@ layout_mode = 2
 sources = [NodePath("../MergedConfig"), NodePath("../SourceRequest"), NodePath("../RenderedRequest"), NodePath("../SourceResponse")]
 source_paths = Array[String](["", "sourceRequest", "convertedRequest", "source"])
 
-[node name="ResponseTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("10_y6us4")]
-visible = false
-layout_mode = 2
-scope = NodePath("../ResponseScope")
-renderOutput = NodePath("../RenderedResponse")
-save_field_name = "ResponseTemplate"
-
 [node name="ErrorTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("10_y6us4")]
 visible = false
 layout_mode = 2
 scope = NodePath("../ResponseScope")
 renderOutput = NodePath("../RenderedResponse")
 save_field_name = "ErrorTemplate"
+
+[node name="ResponseTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("10_y6us4")]
+visible = false
+layout_mode = 2
+scope = NodePath("../ResponseScope")
+renderOutput = NodePath("../RenderedResponse")
+save_field_name = "ResponseTemplate"
 
 [node name="RenderedResponse" parent="HBoxContainer/TabContainer" instance=ExtResource("9_mq753")]
 visible = false
