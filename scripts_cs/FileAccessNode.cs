@@ -6,11 +6,29 @@ using System.IO;
 
 public partial class FileAccessNode : Node
 {
-    [Signal] public delegate void LoadedSettingsEventHandler(Dictionary settings);
-    [Export] public Dictionary Settings { get; set; } = new();
-    [Export] public string CurrentSaveFileProp { get => CurrentSaveFile; set { } } // just for editor
+    public const string WindowTitle = "Liquid Fiddler";
 
-    public static string CurrentSaveFile;
+    [Signal] public delegate void LoadedSettingsEventHandler(Dictionary settings);
+    [Signal] public delegate void AfterLoadedSettingsEventHandler();
+
+    [Export] public Dictionary Settings { get; set; } = new();
+    
+    public string CurrentSaveFile
+    {
+        get => _currentSaveFile;
+        set
+        {
+            _currentSaveFile = value;
+
+            var filePathText = string.IsNullOrWhiteSpace(value)
+                ? "Default"
+                : value;
+
+            DisplayServer.WindowSetTitle($"{WindowTitle} - {filePathText}");
+        }
+    }
+
+    public static string _currentSaveFile;
 
     private const string SettingsPath = @"settings.json";
     public string WorkingDir => Directory.GetCurrentDirectory().Replace('\\', '/');
@@ -24,7 +42,12 @@ public partial class FileAccessNode : Node
     {
         if (!File.Exists(SettingsPath))
         {
-            Settings = new Dictionary { ["DefaultFolderPath"] = WorkingDir };
+            Settings = new Dictionary
+            {
+                ["DefaultFolderPath"] = WorkingDir,
+                ["DefaultValuesPath"] = "default-values.json",
+            };
+
             EmitSignal(SignalName.LoadedSettings, Settings);
             return;
         }
@@ -34,6 +57,7 @@ public partial class FileAccessNode : Node
 
         Settings = ToGdDict(loadedSettings);
         EmitSignal(SignalName.LoadedSettings, Settings);
+        EmitSignal(SignalName.AfterLoadedSettings);
     }
 
     private void SaveSettings()

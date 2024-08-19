@@ -3,6 +3,11 @@ extends HBoxContainer
 signal loaded_values()
 
 
+func _input(event):
+	if event.is_action_pressed("Save") and not $ButtonSave.disabled:
+		save()
+
+
 func create_save_data() -> Dictionary:
 	var save_data = { } as Dictionary
 	var tabs = %TabContainer.get_children() as Array[Node]
@@ -36,6 +41,15 @@ func save_as(file_path: String):
 	
 	if (success):
 		%FileAccessNode.set("CurrentSaveFile", file_path)
+		$ButtonSave.disabled = false
+
+
+func load_default_values():
+	await get_tree().create_timer(0.1).timeout
+	var path = %SettingsTab.get_setting("DefaultValuesPath")
+	load_from_file(path)
+	$ButtonSave.disabled = true
+	%FileAccessNode.set("CurrentSaveFile", null)
 
 
 func load_from_file(path: String):
@@ -51,5 +65,7 @@ func load_from_file(path: String):
 		
 		if (values.has(save_field_name) and "text" in tab):
 			tab.text = values[save_field_name]
-
+	
+	$ButtonSave.disabled = false
+	%FileAccessNode.set("CurrentSaveFile", path)
 	loaded_values.emit()

@@ -18,6 +18,7 @@ text = "Save As"
 [node name="ButtonSave" type="Button" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
+disabled = true
 text = "Save"
 
 [connection signal="pressed" from="ButtonLoad" to="." method="open_load_dialog"]
