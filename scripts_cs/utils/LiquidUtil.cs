@@ -15,7 +15,6 @@ using System.Runtime.Loader;
 public static class LiquidUtil
 {
     private static AssemblyLoadContext LoadContext = AssemblyLoadContext.Default; // new("LiquidExtensions", isCollectible: false);
-    private static Dictionary<string, Assembly> _assemblies = new();
 
     private static Type _templateType;
     private static Type _hashType;
@@ -59,7 +58,7 @@ public static class LiquidUtil
         }
         catch(Exception ex)
         {
-            return ex.InnerException.Message;
+            return ex.InnerException?.Message ?? string.Empty;
         }
     }
 
@@ -102,18 +101,29 @@ public static class LiquidUtil
         return true;
     }
 
-    private static Assembly GetAssembly(string assemblyPath)
+    private static Assembly GetAssembly(string assemblyPath, AssemblyName? assemblyName = null)
     {
-        _assemblies.TryGetValue(assemblyPath, out var assembly);
+        if (assemblyName is not null)
+        {
+            var alreadyLoadedAssembly = LoadContext.Assemblies.SingleOrDefault(a => a.GetName().Name == assemblyName.Name);
 
-        if (assembly is not null)
-            return assembly;
+            if (alreadyLoadedAssembly is not null)
+            {
+                GD.Print($"Assembly {assemblyName.FullName} duplicate by name");
+                return alreadyLoadedAssembly;
+            }
+        }
 
-        if (LoadContext.Assemblies.Any(a => assemblyPath.Contains(a.GetName().Name)))
-            return LoadContext.Assemblies.Single(a => assemblyPath.Contains(a.GetName().Name));
+        var similarByPathAssembly = LoadContext.Assemblies.SingleOrDefault(a => assemblyPath.Contains(a.GetName().Name));
 
-        assembly = LoadContext.LoadFromAssemblyPath(assemblyPath);
-        _assemblies[assemblyPath] = assembly;
+        if (similarByPathAssembly is not null)
+        {
+            return similarByPathAssembly;
+            GD.Print($"Assembly {assemblyName.FullName} duplicate by path");
+        }
+
+        var assembly = LoadContext.LoadFromAssemblyPath(assemblyPath);
+        GD.Print($"Assembly {assembly.GetName().FullName} loaded");
 
         if (assembly.FullName!.Contains("DotLiquid"))
         {
@@ -135,8 +145,7 @@ public static class LiquidUtil
             if (refPath is null)
                 continue;
 
-            GD.Print($"Assembly {assembly.GetName().Name} has dependency {item.Name}");
-            GetAssembly(refPath);
+            GetAssembly(refPath, item);
         }
 
         return assembly;
