@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
@@ -14,7 +15,7 @@ using System.Runtime.Loader;
 
 public static class LiquidUtil
 {
-    private static AssemblyLoadContext LoadContext = AssemblyLoadContext.Default; // new("LiquidExtensions", isCollectible: false);
+    private static AssemblyLoadContext LoadContext = new("LiquidExtensions", isCollectible: true);
 
     private static Type _templateType;
     private static Type _hashType;
@@ -103,6 +104,7 @@ public static class LiquidUtil
 
     private static Assembly GetAssembly(string assemblyPath, AssemblyName? assemblyName = null)
     {
+        // Look in existing AssemblyLoadContexts
         if (assemblyName is not null)
         {
             var alreadyLoadedAssembly = LoadContext.Assemblies.SingleOrDefault(a => a.GetName().Name == assemblyName.Name);
@@ -112,16 +114,25 @@ public static class LiquidUtil
                 GD.Print($"Assembly {assemblyName.FullName} duplicate by name");
                 return alreadyLoadedAssembly;
             }
+
+            var haveInDefaultContextAssembly = AssemblyLoadContext.Default.Assemblies.SingleOrDefault(a => a.GetName().Name == assemblyName.Name);
+
+            if (haveInDefaultContextAssembly is not null)
+            {
+                GD.Print($"Assembly {assemblyName.FullName} got from default context");
+                return haveInDefaultContextAssembly;
+            }
         }
 
         var similarByPathAssembly = LoadContext.Assemblies.SingleOrDefault(a => assemblyPath.Contains(a.GetName().Name));
 
         if (similarByPathAssembly is not null)
         {
+            GD.Print($"Assembly {assemblyName?.FullName ?? Path.GetFileName(assemblyPath)} duplicate by path");
             return similarByPathAssembly;
-            GD.Print($"Assembly {assemblyName.FullName} duplicate by path");
         }
 
+        // Actually load a file
         var assembly = LoadContext.LoadFromAssemblyPath(assemblyPath);
         GD.Print($"Assembly {assembly.GetName().FullName} loaded");
 
@@ -132,6 +143,7 @@ public static class LiquidUtil
             RebindToNewTypes();
         }
 
+        // Get dependencies
         var refs = assembly.GetReferencedAssemblies();
         var resolver = new AssemblyDependencyResolver(assemblyPath);
 
