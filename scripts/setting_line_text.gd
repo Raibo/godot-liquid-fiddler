@@ -20,6 +20,10 @@ func _on_file_dialog_dir_selected(dir_path):
 	setting_changed.emit(setting_name, dir_path)
 
 
+func _on_file_text_changed(file_path):
+	setting_changed.emit(setting_name, file_path)
+
+
 func _on_file_dialog_file_selected(file_path):
 	var base_path = %FileAccessNode.get("WorkingDir")
 	

@@ -45,5 +45,5 @@ text = "Select File"
 script = ExtResource("2_q0vcn")
 
 [connection signal="file_selected" from="FileDialog" to="." method="_on_file_dialog_file_selected"]
-[connection signal="text_changed" from="TextPath" to="." method="_on_file_dialog_file_selected"]
+[connection signal="text_changed" from="TextPath" to="." method="_on_file_text_changed"]
 [connection signal="pressed" from="SelectFile" to="SelectFile" method="open_file_dialog"]

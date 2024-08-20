@@ -53,7 +53,7 @@ func load_default_values():
 
 
 func load_from_file(path: String):
-	var values = %FileAccessNode.call("LoadValues", path) as Dictionary
+	var values = %FileAccessNode.call("LoadValues", path)
 	
 	if (values == null):
 		return
