@@ -1,20 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://ctw16va2mm5um"]
+[gd_scene load_steps=4 format=3 uid="uid://cgir8ttyejv77"]
 
-[ext_resource type="Script" path="res://scripts/filter_selection_block.gd" id="1_nmydl"]
-[ext_resource type="Script" path="res://scripts_cs/FileAccessNode.cs" id="2_p7o1n"]
-[ext_resource type="Script" path="res://scripts/updatable_text_line.gd" id="3_gpyvd"]
+[ext_resource type="Script" path="res://scripts/filter_selection_block.gd" id="1_o1mkt"]
+[ext_resource type="Script" path="res://scripts_cs/FileAccessNode.cs" id="2_m55ih"]
+[ext_resource type="Script" path="res://scripts/updatable_text_line.gd" id="3_sng5r"]
 
-[node name="FilterSelectionBlock" type="VBoxContainer" node_paths=PackedStringArray("value_nodes")]
+[node name="TagSelectionBlock" type="VBoxContainer" node_paths=PackedStringArray("value_nodes")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_nmydl")
-value_nodes = [NodePath("DllPathLine/DllPathLineEdit"), NodePath("ClassNameLine/ClassNameLineEdit")]
+script = ExtResource("1_o1mkt")
+value_nodes = [NodePath("DllPathLine/DllPathLineEdit"), NodePath("ClassNameLine/ClassNameLineEdit"), NodePath("TagNameLine/TagNameLineEdit")]
 
 [node name="FileAccessNode" type="Node" parent="."]
-script = ExtResource("2_p7o1n")
+script = ExtResource("2_m55ih")
 
 [node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a File"
@@ -43,7 +43,7 @@ text = "Dll Path"
 [node name="DllPathLineEdit" type="LineEdit" parent="DllPathLine"]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
-script = ExtResource("3_gpyvd")
+script = ExtResource("3_sng5r")
 field_name = "Path"
 
 [node name="SelectFileButton" type="Button" parent="DllPathLine"]
@@ -69,11 +69,30 @@ text = "Filter Class Full Name"
 [node name="ClassNameLineEdit" type="LineEdit" parent="ClassNameLine"]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
-script = ExtResource("3_gpyvd")
+script = ExtResource("3_sng5r")
 field_name = "ClassName"
+
+[node name="TagNameLine" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="TagNameLine"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TagNameLine"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "Tag Name"
+
+[node name="TagNameLineEdit" type="LineEdit" parent="TagNameLine"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+script = ExtResource("3_sng5r")
+field_name = "TagName"
 
 [connection signal="file_selected" from="FileDialog" to="DllPathLine/DllPathLineEdit" method="update_text"]
 [connection signal="text_changed" from="DllPathLine/DllPathLineEdit" to="." method="update_value"]
 [connection signal="pressed" from="DllPathLine/SelectFileButton" to="." method="open_file_dialog"]
 [connection signal="pressed" from="DllPathLine/RemoveButton" to="." method="disappear"]
 [connection signal="text_changed" from="ClassNameLine/ClassNameLineEdit" to="." method="update_value"]
+[connection signal="text_changed" from="TagNameLine/TagNameLineEdit" to="." method="update_value"]

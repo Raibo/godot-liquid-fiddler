@@ -44,7 +44,7 @@ public static class JsonUtil
         {
             return value?.Type switch
             {
-                JTokenType.Array => value.ToObject<List<JValue>>()!
+                JTokenType.Array => value.Values<JToken>()!
                     .Select(ConvertValue)
                     .ToList(),
 

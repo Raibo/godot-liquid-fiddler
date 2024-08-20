@@ -1,5 +1,6 @@
 using Godot;
 using Godot.Collections;
+using LiquidFiddle.NonScriptCode;
 using LiquidFiddle.scripts_cs.utils;
 using Newtonsoft.Json;
 using System;
@@ -13,7 +14,8 @@ public partial class FileAccessNode : Node
     [Signal] public delegate void LoadedSettingsEventHandler(Dictionary settings);
     [Signal] public delegate void AfterLoadedSettingsEventHandler();
 
-    [Export] public Dictionary Settings { get; set; } = new();
+    [Export] public Dictionary Settings { get => _settings; set => _settings = value; }
+    private static Dictionary _settings = new();
     
     public string CurrentSaveFile
     {
@@ -35,15 +37,15 @@ public partial class FileAccessNode : Node
     private const string SettingsPath = @"settings.json";
     public string WorkingDir => Directory.GetCurrentDirectory().Replace('\\', '/');
 
-    public override void _Ready()
+    private Variant GetSetting(string settingName)
     {
-        LoadSettings();
-    }
+        var success = Settings.TryGetValue(settingName, out var value);
 
-    private string GetSetting(string settingName)
-    {
-        Settings.TryGetValue(settingName, out var value);
-        return value.AsString();
+        if (!success)
+            foreach (var key in Settings.Keys)
+                GD.Print(key);
+
+        return value;
     }
 
     private void LoadSettings()
@@ -61,9 +63,13 @@ public partial class FileAccessNode : Node
         }
 
         var text = File.ReadAllText(SettingsPath);
-        var loadedSettings = JsonConvert.DeserializeObject<System.Collections.Generic.Dictionary<string, object>>(text);
+        var loadedSettingsResult = JsonUtil.Parse(text);
 
-        Settings = ConversionUtil.ToGdDict(loadedSettings);
+        if (loadedSettingsResult.IsFailure)
+            return;
+
+
+        Settings = ConversionUtil.ToGdDict(loadedSettingsResult.Value);
         EmitSignal(SignalName.LoadedSettings, Settings);
         EmitSignal(SignalName.AfterLoadedSettings);
     }

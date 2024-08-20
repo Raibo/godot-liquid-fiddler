@@ -1,5 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://livgtmaj2lyh"]
+[gd_scene load_steps=14 format=3 uid="uid://livgtmaj2lyh"]
 
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_6mn4r"]
 [ext_resource type="Script" path="res://scripts_cs/UtilAccessNode.cs" id="1_blnvf"]
 [ext_resource type="Script" path="res://scripts_cs/FileAccessNode.cs" id="2_cgwww"]
 [ext_resource type="Texture2D" uid="uid://bv5752kvaxwdi" path="res://arrow2.png" id="3_p3rvg"]
@@ -20,6 +21,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_6mn4r")
 
 [node name="UtilAccessNode" type="Node" parent="."]
 unique_name_in_owner = true
@@ -240,6 +242,7 @@ visible = false
 layout_mode = 2
 
 [node name="Button" type="Button" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 3.0
 offset_top = 4.0

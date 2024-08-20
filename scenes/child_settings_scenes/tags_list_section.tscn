@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dj5vx6qfchbil"]
+
+[ext_resource type="PackedScene" uid="uid://bpaw7q4wfqxh2" path="res://scenes/item_list_section.tscn" id="1_yi48s"]
+[ext_resource type="PackedScene" uid="uid://cgir8ttyejv77" path="res://scenes/tag_selection_block.tscn" id="2_i57jg"]
+
+[node name="TagListSection" instance=ExtResource("1_yi48s")]
+setting_name = "LiquidTags"
+item = ExtResource("2_i57jg")
+
+[node name="LabelFilters" parent="." index="1"]
+text = "Liquid Tag Extensions"

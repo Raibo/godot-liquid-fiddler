@@ -1,10 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://babd1sraci6li"]
+[gd_scene load_steps=5 format=3 uid="uid://babd1sraci6li"]
 
 [ext_resource type="Script" path="res://scripts/settings_tab.gd" id="1_ldx1n"]
 [ext_resource type="PackedScene" uid="uid://dv476ywbeolrf" path="res://scenes/child_settings_scenes/setting_default_folder.tscn" id="2_mqqkl"]
 [ext_resource type="PackedScene" uid="uid://c3hkjwxwggnev" path="res://scenes/child_settings_scenes/setting_default_values_path.tscn" id="3_7uvdi"]
 [ext_resource type="PackedScene" uid="uid://btb1gaal2advo" path="res://scenes/child_settings_scenes/filters_list_section.tscn" id="4_514lf"]
-[ext_resource type="PackedScene" uid="uid://dj5vx6qfchbil" path="res://scenes/child_settings_scenes/tags_list_section.tscn" id="5_uo6i6"]
 
 [node name="SettingsTab" type="VBoxContainer"]
 script = ExtResource("1_ldx1n")
@@ -21,39 +20,13 @@ setting_name = "DefaultFolderPath"
 layout_mode = 2
 setting_name = "DefaultValuesPath"
 
-[node name="Spacer4" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 2
-
-[node name="ReloadExtensions" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="Spacer" type="Control" parent="ReloadExtensions"]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-
-[node name="ReloadExtensionsButton" type="Button" parent="ReloadExtensions"]
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Reload Extensions"
-
 [node name="Spacer2" type="Control" parent="."]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="FilterListSection" parent="." instance=ExtResource("4_514lf")]
+[node name="ItemListSection" parent="." instance=ExtResource("4_514lf")]
 layout_mode = 2
-setting_name = "LiquidFilters"
-
-[node name="Spacer3" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 2
-
-[node name="ItemListSection" parent="." instance=ExtResource("5_uo6i6")]
-layout_mode = 2
+values = Array[Dictionary]([])
 
 [connection signal="setting_changed" from="DefaultFolder" to="." method="update_setting"]
 [connection signal="setting_changed" from="DefaultValuesFile" to="." method="update_setting"]
-[connection signal="pressed" from="ReloadExtensions/ReloadExtensionsButton" to="." method="reload_liquid"]
-[connection signal="setting_updated" from="FilterListSection" to="." method="update_setting"]
-[connection signal="setting_updated" from="ItemListSection" to="." method="update_setting"]

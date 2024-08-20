@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://btb1gaal2advo"]
+
+[ext_resource type="PackedScene" uid="uid://bpaw7q4wfqxh2" path="res://scenes/item_list_section.tscn" id="1_7e0fk"]
+[ext_resource type="PackedScene" uid="uid://ctw16va2mm5um" path="res://scenes/filter_selection_block.tscn" id="2_k6hkd"]
+
+[node name="FilterListSection" instance=ExtResource("1_7e0fk")]
+item = ExtResource("2_k6hkd")
+
+[node name="LabelFilters" parent="." index="1"]
+text = "Liquid Filter Extensions"

@@ -1,4 +1,17 @@
 {
   "DefaultFolderPath": "C:/Coding/Godot/Projects",
-  "DefaultValuesPath": "default-values.json"
+  "DefaultValuesPath": "default-values.json",
+  "LiquidFilters": [
+    {
+      "Path": "C:/Coding/LiquidExtenstions/Dlls/LiquidExtensions.dll",
+      "ClassName": "LiquidExtensions.AdditionalFilters"
+    }
+  ],
+  "LiquidTags": [
+    {
+      "Path": "C:/Coding/LiquidExtenstions/Dlls/LiquidExtensions.dll",
+      "ClassName": "LiquidExtensions.CoolTag",
+      "TagName": "cool_tag"
+    }
+  ]
 }

@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://bpaw7q4wfqxh2"]
+
+[ext_resource type="Script" path="res://scripts/item_list_section.gd" id="1_dqjjc"]
+[ext_resource type="Script" path="res://scripts_cs/FileAccessNode.cs" id="2_4ghr8"]
+
+[node name="ItemListSection" type="VBoxContainer"]
+script = ExtResource("1_dqjjc")
+
+[node name="FileAccessNode" type="Node" parent="."]
+script = ExtResource("2_4ghr8")
+
+[node name="LabelFilters" type="Label" parent="."]
+layout_mode = 2
+text = "Items"
+horizontal_alignment = 1
+
+[node name="AddItemButton" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "  +  "
+
+[connection signal="pressed" from="AddItemButton" to="." method="add_element"]
