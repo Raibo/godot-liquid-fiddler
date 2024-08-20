@@ -20,6 +20,9 @@ public static class LiquidUtil
 	private static Type _templateType;
 	private static Type _hashType;
 
+	private static Type _defaultTemplateType;
+	private static Type _defaultHashType;
+
 	private static MethodInfo _templateParseMethod;
 	private static MethodInfo _templateRenderMethod;
 	private static PropertyInfo _templateErrorsProp;
@@ -29,6 +32,9 @@ public static class LiquidUtil
 	{
 		_templateType = typeof(Template);
 		_hashType = typeof(Hash);
+
+		_defaultTemplateType = typeof(Template);
+		_defaultHashType = typeof(Hash);
 
 		RebindToNewTypes();
 	}

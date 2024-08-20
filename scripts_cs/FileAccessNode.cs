@@ -1,8 +1,10 @@
 using Godot;
 using Godot.Collections;
+using LiquidFiddle.scripts_cs.utils;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Linq;
 
 public partial class FileAccessNode : Node
 {
@@ -38,6 +40,12 @@ public partial class FileAccessNode : Node
         LoadSettings();
     }
 
+    private string GetSetting(string settingName)
+    {
+        Settings.TryGetValue(settingName, out var value);
+        return value.AsString();
+    }
+
     private void LoadSettings()
     {
         if (!File.Exists(SettingsPath))
@@ -53,16 +61,16 @@ public partial class FileAccessNode : Node
         }
 
         var text = File.ReadAllText(SettingsPath);
-        var loadedSettings = JsonConvert.DeserializeObject<Dictionary<string, string>>(text);
+        var loadedSettings = JsonConvert.DeserializeObject<System.Collections.Generic.Dictionary<string, object>>(text);
 
-        Settings = ToGdDict(loadedSettings);
+        Settings = ConversionUtil.ToGdDict(loadedSettings);
         EmitSignal(SignalName.LoadedSettings, Settings);
         EmitSignal(SignalName.AfterLoadedSettings);
     }
 
     private void SaveSettings()
     {
-        var text = JsonConvert.SerializeObject(ToCsDict(Settings), Formatting.Indented);
+        var text = JsonConvert.SerializeObject(ConversionUtil.ToCsDict(Settings), Formatting.Indented);
         File.WriteAllText(SettingsPath, text);
     }
 
@@ -70,7 +78,7 @@ public partial class FileAccessNode : Node
     {
         try
         {
-            var text = JsonConvert.SerializeObject(ToCsDict(values), Formatting.Indented);
+            var text = JsonConvert.SerializeObject(ConversionUtil.ToCsDict(values), Formatting.Indented);
             File.WriteAllText(path, text);
             return true;
         }
@@ -85,32 +93,12 @@ public partial class FileAccessNode : Node
         try
         {
             var text = File.ReadAllText(path);
-            var csDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(text);
-            return ToGdDict(csDict);
+            var csDict = JsonConvert.DeserializeObject<System.Collections.Generic.Dictionary<string, object>>(text);
+            return ConversionUtil.ToGdDict(csDict);
         }
         catch
         {
             return null;
         }
-    }
-
-    private Dictionary<string, string> ToCsDict(Dictionary gdDict)
-    {
-        var scDict = new Dictionary<string, string>();
-
-        foreach (var item in gdDict)
-            scDict.Add(item.Key.AsString(), item.Value.AsString());
-
-        return scDict;
-    }
-
-    private Dictionary ToGdDict(Dictionary<string, string> scDict)
-    {
-        var gdDict = new Dictionary();
-
-        foreach (var (key, value) in scDict)
-            gdDict.Add(key, value);
-
-        return gdDict;
     }
 }
