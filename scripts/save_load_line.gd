@@ -45,17 +45,14 @@ func save_as(file_path: String):
 
 
 func load_default_values():
-	print("entered load vals")
 	await get_tree().create_timer(0.1).timeout
 	var path = %FileAccessNode.get("CurrentSaveFile") # if opening a file using the app
-	print("got path " + path)
 	var defaultVals = false
 	
 	if not path or path.is_empty():
 		path = %SettingsTab.get_setting("DefaultValuesPath")
 		defaultVals = true
 	
-	print("loading from file " + path)
 	load_from_file(path)
 	$ButtonSave.disabled = defaultVals
 	

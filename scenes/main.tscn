@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://ie34vkifem4q" path="res://scenes/template_tab.tscn" id="10_y6us4"]
 [ext_resource type="Script" path="res://scripts/button.gd" id="11_cq5ae"]
 
-[node name="Main" type="Control"]
+[node name="Main" type="Control" node_paths=PackedStringArray("force_tab_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,6 +22,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_6mn4r")
+force_tab_button = NodePath("HBoxContainer/VTabButtonsContainer/ButtonTemplateReq")
 
 [node name="UtilAccessNode" type="Node" parent="."]
 unique_name_in_owner = true

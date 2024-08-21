@@ -7,8 +7,8 @@ signal setting_changed(setting_name: String, new_setting: String)
 @onready var exec_path: String = OS.get_executable_path()
 
 
-func get_setting(setting_name: String) -> String:
-	return $"..".get_setting(setting_name)
+func get_setting(s_name: String) -> String:
+	return $"..".get_setting(s_name)
 
 
 func _on_text_path_text_changed(new_text):

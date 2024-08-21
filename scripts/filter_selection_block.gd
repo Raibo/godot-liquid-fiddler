@@ -28,8 +28,8 @@ func update_value(_whatever: String):
 	
 	value_updated.emit()
 
-func set_fields_match_value(value):
+func set_fields_match_value(new_value):
 	for node in value_nodes:
 		if "field_name" in node:
-			node.text = value.get(node.field_name, "")
+			node.text = new_value.get(node.field_name, "")
 

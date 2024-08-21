@@ -37,6 +37,8 @@ public partial class FileAccessNode : Node
 
     private const string SettingsPath = @"settings.json";
     public string WorkingDir => Directory.GetCurrentDirectory().Replace('\\', '/');
+    public string ExecPath { get => _execPath; set => _execPath = value; }
+    private static string _execPath;
 
     private Variant GetSetting(string settingName)
     {
@@ -46,7 +48,9 @@ public partial class FileAccessNode : Node
 
     private void LoadSettings()
     {
-        if (!File.Exists(SettingsPath))
+        var settingsFullPath = Path.Combine(Path.GetDirectoryName(ExecPath), SettingsPath);
+
+        if (!File.Exists(settingsFullPath))
         {
             Settings = new Dictionary
             {
@@ -55,15 +59,16 @@ public partial class FileAccessNode : Node
             };
 
             EmitSignal(SignalName.LoadedSettings, Settings);
+            EmitSignal(SignalName.AfterLoadedSettings);
+
             return;
         }
 
-        var text = File.ReadAllText(SettingsPath);
+        var text = File.ReadAllText(settingsFullPath);
         var loadedSettingsResult = JsonUtil.Parse(text);
 
         if (loadedSettingsResult.IsFailure)
             return;
-
 
         Settings = ConversionUtil.ToGdDict(loadedSettingsResult.Value);
         EmitSignal(SignalName.LoadedSettings, Settings);

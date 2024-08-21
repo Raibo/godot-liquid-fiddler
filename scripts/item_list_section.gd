@@ -41,8 +41,8 @@ func _on_load_settings(_settings):
 	if (settings == null):
 		return
 	
-	for item in settings:
-		add_element_with_value(item)
+	for setting in settings:
+		add_element_with_value(setting)
 
 func _on_element_disappear():
 	update_values()
