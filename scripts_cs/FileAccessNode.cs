@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 public partial class FileAccessNode : Node
 {
@@ -39,12 +40,7 @@ public partial class FileAccessNode : Node
 
     private Variant GetSetting(string settingName)
     {
-        var success = Settings.TryGetValue(settingName, out var value);
-
-        if (!success)
-            foreach (var key in Settings.Keys)
-                GD.Print(key);
-
+        Settings.TryGetValue(settingName, out var value);
         return value;
     }
 
@@ -54,8 +50,8 @@ public partial class FileAccessNode : Node
         {
             Settings = new Dictionary
             {
-                ["DefaultFolderPath"] = WorkingDir,
-                ["DefaultValuesPath"] = "default-values.json",
+                ["DefaultFolderPath"] = "",
+                ["DefaultValuesPath"] = "default-values.lfv",
             };
 
             EmitSignal(SignalName.LoadedSettings, Settings);

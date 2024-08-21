@@ -1,4 +1,4 @@
 {
-  "DefaultFolderPath": null,
-  "DefaultValuesPath": "default-values.json"
+  "DefaultFolderPath": "",
+  "DefaultValuesPath": "default-values.lfv"
 }

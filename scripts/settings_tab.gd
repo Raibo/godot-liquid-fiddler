@@ -8,7 +8,8 @@ func update_setting(setting_name: String, new_value: Variant):
 
 
 func get_setting(setting_name:String) -> String:
-	return %FileAccessNode.call("GetSetting", setting_name)
+	var setting = %FileAccessNode.call("GetSetting", setting_name)
+	return setting if setting else ""
 
 
 func load_settings(settings: Dictionary):
@@ -21,6 +22,9 @@ func load_settings(settings: Dictionary):
 func reload_liquid():
 	var liquid_filters = %FileAccessNode.call("GetSetting", "LiquidFilters")
 	var liquid_tags = %FileAccessNode.call("GetSetting", "LiquidTags")
+	
+	if not liquid_filters or not liquid_tags:
+		return
 	
 	for filter in liquid_filters:
 		%UtilAccessNode.call("LoadFilters", filter["Path"], filter["ClassName"])

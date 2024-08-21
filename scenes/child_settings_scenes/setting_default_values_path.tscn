@@ -5,7 +5,7 @@
 [node name="SettingDefaultValuesPath" instance=ExtResource("1_7ro3o")]
 
 [node name="FileDialog" parent="." index="2"]
-filters = PackedStringArray("*.json")
+filters = PackedStringArray("*.lfv")
 
 [node name="SettingLabel" parent="." index="4"]
 text = "Default Values Path"

@@ -38,7 +38,7 @@ initial_position = 2
 size = Vector2i(800, 400)
 ok_button_text = "Save"
 access = 2
-filters = PackedStringArray("*.json")
+filters = PackedStringArray("*.lfv")
 
 [node name="LoadDialog" type="FileDialog" parent="."]
 unique_name_in_owner = true
@@ -48,7 +48,7 @@ size = Vector2i(800, 400)
 ok_button_text = "Open"
 file_mode = 0
 access = 2
-filters = PackedStringArray("*.json")
+filters = PackedStringArray("*.lfv")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_direction = 2
@@ -167,11 +167,13 @@ tab_index = 12
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+current_tab = 6
 tabs_visible = false
 script = ExtResource("6_bmljk")
 
 [node name="SettingsTab" parent="HBoxContainer/TabContainer" instance=ExtResource("7_5jgh4")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="GroupConfig" parent="HBoxContainer/TabContainer" instance=ExtResource("8_dstrs")]
@@ -202,7 +204,6 @@ sources = [NodePath("../MergedConfig"), NodePath("../SourceRequest")]
 source_paths = Array[String](["", "source"])
 
 [node name="RequestTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("10_y6us4")]
-visible = false
 layout_mode = 2
 scope = NodePath("../RequestScope")
 renderOutput = NodePath("../RenderedRequest")

@@ -1,0 +1,9 @@
+{
+  "GroupConfig": "{\n  \"baseUrl\": \"http://example.com\"\n}",
+  "EndpointConfig": "{\n  \"url\": \"something/important\"\n}",
+  "SourceRequest": "{\n  \"headers\": {\n    \"Content-Type\": \"application/json\",\n    \"Cache-Control\": \"no-cache\",\n    \"X-Custom-Header\": \"something-cool\"\n  },\n  \"body\": {\n    \"bodyKey1\": 1,\n    \"bodyKey2\": false\n  },\n  \"parameters\": {\n    \"param1\": \"yes\",\n    \"param2\": \"no\"\n  }\n}",
+  "RequestTemplate": "{\n    \"headers\": {\n        \"Content-Type\": \"application/json\"\n    },\n    \"url\": \"{{ baseUrl }}/{{ url }}\",\n    \"body\": {\n        \"theImportantValue\": {{ source.body.bodyKey1 }}\n    }\n}",
+  "SourceResponse": "{\n  \"statusCode\": 200,\n  \"headers\": {\n    \"Content-Type\": \"application/json\",\n    \"Cache-Control\": \"no-cache\",\n    \"X-Custom-Header\": \"something-cool\"\n  },\n  \"body\": {\n    \"bodyKey3\": true,\n    \"bodyKey4\": false,\n    \"bodyKey5\": \"some information\"\n  }\n}",
+  "ResponseTemplate": "{\n    \"statusCode\": {{ source.statusCode }}\n    \"headers\": {\n        \"Content-Type\": \"application/json\"\n    },\n    \"body\": {\n        \"responseKeyStuff\": {{ source.body.bodyKey3 }}\n    }\n}",
+  "ErrorTemplate": "{\n    \"statusCode\": 400\n    \"headers\": {\n        \"Content-Type\": \"application/json\"\n    },\n    \"body\": {\n        \"error\": \"{{ source.body.bodyKey5 }}\"\n    }\n}"
+}

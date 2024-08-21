@@ -22,8 +22,11 @@ auto_brace_completion_pairs = {
 "(": ")",
 "[": "]",
 "{": "}",
-"{% ": " %",
-"{{ ": " "
+"{%": "%",
+"{% ": " ",
+"{%- ": " ",
+"{{ ": " ",
+"{{- ": " "
 }
 
 [node name="CodeEditRender" type="CodeEdit" parent="."]
