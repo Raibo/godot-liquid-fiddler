@@ -11,12 +11,13 @@ script = ExtResource("2_4ghr8")
 
 [node name="LabelFilters" type="Label" parent="."]
 layout_mode = 2
+size_flags_horizontal = 0
 text = "Items"
 horizontal_alignment = 1
 
 [node name="AddItemButton" type="Button" parent="."]
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 0
 text = "  +  "
 
 [connection signal="pressed" from="AddItemButton" to="." method="add_element"]

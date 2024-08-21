@@ -25,14 +25,7 @@ file_mode = 0
 access = 2
 filters = PackedStringArray("*.dll")
 
-[node name="HSeparator" type="HSeparator" parent="."]
-layout_mode = 2
-
 [node name="DllPathLine" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="Spacer" type="Control" parent="DllPathLine"]
-custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 
 [node name="Label" type="Label" parent="DllPathLine"]
@@ -57,10 +50,6 @@ text = "  -  "
 [node name="ClassNameLine" type="HBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="Spacer" type="Control" parent="ClassNameLine"]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-
 [node name="Label" type="Label" parent="ClassNameLine"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
@@ -71,6 +60,9 @@ custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 script = ExtResource("3_gpyvd")
 field_name = "ClassName"
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
 
 [connection signal="file_selected" from="FileDialog" to="DllPathLine/DllPathLineEdit" method="update_text"]
 [connection signal="text_changed" from="DllPathLine/DllPathLineEdit" to="." method="update_value"]

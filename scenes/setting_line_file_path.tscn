@@ -25,10 +25,6 @@ ok_button_text = "Open"
 file_mode = 0
 access = 2
 
-[node name="Spacer" type="Control" parent="."]
-custom_minimum_size = Vector2(50, 0)
-layout_mode = 2
-
 [node name="SettingLabel" type="Label" parent="."]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2

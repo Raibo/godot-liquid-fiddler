@@ -8,7 +8,7 @@ signal setting_changed(setting_name: String, new_setting: String)
 
 
 func get_setting(s_name: String) -> String:
-	return $"..".get_setting(s_name)
+	return $"../..".get_setting(s_name)
 
 
 func _on_text_path_text_changed(new_text):

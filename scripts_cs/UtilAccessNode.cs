@@ -83,6 +83,9 @@ public partial class UtilAccessNode : Node
     private bool LoadTag(string assemblyPath, string className, string tagName) =>
         LiquidUtil.LoadTagFromAssembly(assemblyPath, className, tagName);
 
+    private void UnloadLiquidExtensions() =>
+        LiquidUtil.UnloadLiquidExtensions();
+
     private void InsertDictionary(Dictionary<string, object?> destination, Dictionary<string, object?> source)
     {
         foreach (var (key, sourceValue) in source)

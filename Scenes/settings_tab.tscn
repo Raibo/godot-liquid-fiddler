@@ -6,54 +6,87 @@
 [ext_resource type="PackedScene" uid="uid://btb1gaal2advo" path="res://scenes/child_settings_scenes/filters_list_section.tscn" id="4_514lf"]
 [ext_resource type="PackedScene" uid="uid://dj5vx6qfchbil" path="res://scenes/child_settings_scenes/tags_list_section.tscn" id="5_uo6i6"]
 
-[node name="SettingsTab" type="VBoxContainer"]
+[node name="SettingsTab" type="ScrollContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_ldx1n")
 
-[node name="Spacer" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 50)
+[node name="ScrollContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="DefaultFolder" parent="." instance=ExtResource("2_mqqkl")]
-layout_mode = 2
-setting_name = "DefaultFolderPath"
-
-[node name="DefaultValuesFile" parent="." instance=ExtResource("3_7uvdi")]
-layout_mode = 2
-setting_name = "DefaultValuesPath"
-
-[node name="Spacer4" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 2
-
-[node name="ReloadExtensions" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="Spacer" type="Control" parent="ReloadExtensions"]
+[node name="Spacer" type="Control" parent="ScrollContainer"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 
-[node name="ReloadExtensionsButton" type="Button" parent="ReloadExtensions"]
+[node name="SettingsTab2" type="VBoxContainer" parent="ScrollContainer"]
 layout_mode = 2
-size_flags_horizontal = 0
-text = "Reload Extensions"
 
-[node name="Spacer2" type="Control" parent="."]
+[node name="Spacer" type="Control" parent="ScrollContainer/SettingsTab2"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="DefaultFolder" parent="ScrollContainer/SettingsTab2" instance=ExtResource("2_mqqkl")]
+layout_mode = 2
+setting_name = "DefaultFolderPath"
+
+[node name="DefaultValuesFile" parent="ScrollContainer/SettingsTab2" instance=ExtResource("3_7uvdi")]
+layout_mode = 2
+setting_name = "DefaultValuesPath"
+
+[node name="Spacer4" type="Control" parent="ScrollContainer/SettingsTab2"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 
-[node name="FilterListSection" parent="." instance=ExtResource("4_514lf")]
+[node name="LiquidSectionLabelContainer" type="HBoxContainer" parent="ScrollContainer/SettingsTab2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ScrollContainer/SettingsTab2/LiquidSectionLabelContainer"]
+layout_mode = 2
+text = "Liquid Extensions"
+
+[node name="Spacer5" type="Control" parent="ScrollContainer/SettingsTab2"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="ReloadExtensions" type="HBoxContainer" parent="ScrollContainer/SettingsTab2"]
+layout_mode = 2
+
+[node name="ReloadExtensionsButton" type="Button" parent="ScrollContainer/SettingsTab2/ReloadExtensions"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Load Extensions"
+
+[node name="Spacer2" type="Control" parent="ScrollContainer/SettingsTab2/ReloadExtensions"]
+custom_minimum_size = Vector2(25, 0)
+layout_mode = 2
+
+[node name="UnloadExtensionsButton" type="Button" parent="ScrollContainer/SettingsTab2/ReloadExtensions"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Unload Extensions"
+
+[node name="Spacer2" type="Control" parent="ScrollContainer/SettingsTab2"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="FilterListSection" parent="ScrollContainer/SettingsTab2" instance=ExtResource("4_514lf")]
 layout_mode = 2
 setting_name = "LiquidFilters"
 
-[node name="Spacer3" type="Control" parent="."]
-custom_minimum_size = Vector2(0, 20)
+[node name="Spacer3" type="Control" parent="ScrollContainer/SettingsTab2"]
+custom_minimum_size = Vector2(0, 5)
 layout_mode = 2
 
-[node name="ItemListSection" parent="." instance=ExtResource("5_uo6i6")]
+[node name="ItemListSection" parent="ScrollContainer/SettingsTab2" instance=ExtResource("5_uo6i6")]
 layout_mode = 2
 
-[connection signal="setting_changed" from="DefaultFolder" to="." method="update_setting"]
-[connection signal="setting_changed" from="DefaultValuesFile" to="." method="update_setting"]
-[connection signal="pressed" from="ReloadExtensions/ReloadExtensionsButton" to="." method="reload_liquid"]
-[connection signal="setting_updated" from="FilterListSection" to="." method="update_setting"]
-[connection signal="setting_updated" from="ItemListSection" to="." method="update_setting"]
+[connection signal="setting_changed" from="ScrollContainer/SettingsTab2/DefaultFolder" to="." method="update_setting"]
+[connection signal="setting_changed" from="ScrollContainer/SettingsTab2/DefaultValuesFile" to="." method="update_setting"]
+[connection signal="pressed" from="ScrollContainer/SettingsTab2/ReloadExtensions/ReloadExtensionsButton" to="." method="reload_liquid"]
+[connection signal="pressed" from="ScrollContainer/SettingsTab2/ReloadExtensions/UnloadExtensionsButton" to="." method="reset_liquid"]
+[connection signal="setting_updated" from="ScrollContainer/SettingsTab2/FilterListSection" to="." method="update_setting"]
+[connection signal="setting_updated" from="ScrollContainer/SettingsTab2/ItemListSection" to="." method="update_setting"]

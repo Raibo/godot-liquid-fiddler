@@ -202,7 +202,7 @@ save_field_name = "SourceRequest"
 visible = false
 layout_mode = 2
 sources = [NodePath("../MergedConfig"), NodePath("../SourceRequest")]
-source_paths = Array[String](["", "source"])
+source_paths = Array[String](["config", "source"])
 
 [node name="RequestTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("10_y6us4")]
 layout_mode = 2
@@ -223,7 +223,7 @@ save_field_name = "SourceResponse"
 visible = false
 layout_mode = 2
 sources = [NodePath("../MergedConfig"), NodePath("../SourceRequest"), NodePath("../RenderedRequest"), NodePath("../SourceResponse")]
-source_paths = Array[String](["", "sourceRequest", "convertedRequest", "source"])
+source_paths = Array[String](["config", "sourceRequest", "convertedRequest", "source"])
 
 [node name="ErrorTemplate" parent="HBoxContainer/TabContainer" node_paths=PackedStringArray("scope", "renderOutput") instance=ExtResource("10_y6us4")]
 visible = false

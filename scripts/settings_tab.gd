@@ -1,8 +1,8 @@
-extends VBoxContainer
+extends Node
 
 
 func update_setting(setting_name: String, new_value: Variant):
-	var settings = %FileAccessNode.get("Settings") as Dictionary	
+	var settings = %FileAccessNode.get("Settings") as Dictionary
 	settings[setting_name] = new_value
 	%FileAccessNode.call("SaveSettings")
 
@@ -13,7 +13,7 @@ func get_setting(setting_name:String) -> String:
 
 
 func load_settings(settings: Dictionary):
-	for node in get_children():
+	for node in $ScrollContainer/SettingsTab2.get_children():
 		if (node.has_method("_on_load_settings")):
 			node._on_load_settings(settings)
 	
@@ -23,11 +23,13 @@ func reload_liquid():
 	var liquid_filters = %FileAccessNode.call("GetSetting", "LiquidFilters")
 	var liquid_tags = %FileAccessNode.call("GetSetting", "LiquidTags")
 	
-	if not liquid_filters or not liquid_tags:
-		return
+	if liquid_filters:
+		for filter in liquid_filters:
+			%UtilAccessNode.call("LoadFilters", filter["Path"], filter["ClassName"])
 	
-	for filter in liquid_filters:
-		%UtilAccessNode.call("LoadFilters", filter["Path"], filter["ClassName"])
-	
-	for tag in liquid_tags:
-		%UtilAccessNode.call("LoadTag", tag["Path"], tag["ClassName"], tag["TagName"])
+	if liquid_tags:
+		for tag in liquid_tags:
+			%UtilAccessNode.call("LoadTag", tag["Path"], tag["ClassName"], tag["TagName"])
+
+func reset_liquid():
+	%UtilAccessNode.call("UnloadLiquidExtensions")

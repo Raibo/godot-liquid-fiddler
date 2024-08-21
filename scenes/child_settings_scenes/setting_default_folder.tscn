@@ -4,5 +4,5 @@
 
 [node name="SettingLineFolderPath" instance=ExtResource("1_b4ch6")]
 
-[node name="SettingLabel" parent="." index="4"]
+[node name="SettingLabel" parent="." index="3"]
 text = "Default Browse Folder"

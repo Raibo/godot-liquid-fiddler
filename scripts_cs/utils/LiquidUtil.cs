@@ -85,62 +85,126 @@ public static class LiquidUtil
     public static string[] LoadFiltersFromAssembly(string assemblyPath, string className)
     {
         var assembly = GetAssembly(assemblyPath);
+
+        if (string.IsNullOrWhiteSpace(className))
+        {
+            GD.Print($"Cannot load filter, class name is blank");
+            return Array.Empty<string>();
+        }
+
+        if (assembly is null)
+            return Array.Empty<string>();
+
         var type = assembly.GetType(className);
 
         if (type is null)
+        {
+            GD.Print($"Cannot load filter, class {className} not found in assembly {assembly.GetName().Name}");
             return Array.Empty<string>();
+        }
 
         RegisterFilter(type);
 
-        return type.GetMethods(BindingFlags.Static | BindingFlags.Public).Select(m => m.Name).ToArray();
+        var loadedFilters = type.GetMethods(BindingFlags.Static | BindingFlags.Public).Select(m => m.Name).ToArray();
+
+        foreach (var item in loadedFilters)
+            GD.Print($"Loaded filter {item} from assembly {assembly.GetName().Name}");
+
+        return loadedFilters;
     }
 
     public static bool LoadTagFromAssembly(string assemblyPath, string className, string tagName)
     {
         var assembly = GetAssembly(assemblyPath);
+
+        if (string.IsNullOrWhiteSpace(className))
+        {
+            GD.Print($"Cannot load tag {tagName}, class name is blank");
+            return false;
+        }
+
+        if (assembly is null)
+            return false;
+
         var type = assembly.GetType(className);
 
         if (type is null)
+        {
+            GD.Print($"Cannot load tag {tagName}, class {className} not found in assembly {assembly.GetName().Name}");
             return false;
+        }
 
         RegisterTag(type, tagName);
 
+        GD.Print($"Loaded tag {tagName} from assembly {assembly.GetName().Name}");
         return true;
     }
 
-    private static Assembly GetAssembly(string assemblyPath, AssemblyName? assemblyName = null)
+    private static Assembly? GetAssembly(string? assemblyPath, AssemblyName? assemblyName = null)
     {
-        // Look in existing AssemblyLoadContexts
-        if (assemblyName is not null)
+        if (assemblyPath is null && assemblyName is null)
         {
-            var alreadyLoadedAssembly = LoadContext.Assemblies.SingleOrDefault(a => a.GetName().Name == assemblyName.Name);
+            GD.Print("Attempted to load an unknown assembly");
+            return null;
+        }
+
+        string? assemblyFullPath = null;
+
+        if (assemblyPath is not null)
+            assemblyFullPath = Path.GetFullPath(assemblyPath, Path.GetDirectoryName(FileAccessNode.ExecPathStatic)!);
+
+        if (assemblyName is not null && assemblyName.Name != "DotLiquid")
+        {
+            // Look if already loaded in LoadContext
+            var alreadyLoadedAssembly = LoadContext.Assemblies.SingleOrDefault(a => a.GetName().FullName == assemblyName.FullName);
 
             if (alreadyLoadedAssembly is not null)
             {
-                GD.Print($"Assembly {assemblyName.FullName} duplicate by name");
+                GD.Print($"Assembly {assemblyName.FullName} already loaded");
                 return alreadyLoadedAssembly;
             }
 
-            var haveInDefaultContextAssembly = AssemblyLoadContext.Default.Assemblies.SingleOrDefault(a => a.GetName().Name == assemblyName.Name);
+            // Try to load by name
+            Assembly? byNameAssembly = null;
 
-            if (haveInDefaultContextAssembly is not null)
+            try
             {
-                GD.Print($"Assembly {assemblyName.FullName} got from default context");
-                return haveInDefaultContextAssembly;
+                byNameAssembly = LoadContext.LoadFromAssemblyName(assemblyName);
+            }
+            catch (Exception)
+            { }
+
+            if (byNameAssembly is not null)
+            {
+                GD.Print($"Assembly {assemblyName.FullName} loaded by name");
+                return byNameAssembly;
             }
         }
 
-        var similarByPathAssembly = LoadContext.Assemblies.SingleOrDefault(a => assemblyPath.Contains(a.GetName().Name));
+        // Look if loaded something with similar path
+        //if (assemblyFullPath is not null)
+        //{
+        //    var similarByPathAssembly = LoadContext.Assemblies.SingleOrDefault(a => assemblyFullPath.Contains(a.GetName().Name));
 
-        if (similarByPathAssembly is not null)
-        {
-            GD.Print($"Assembly {assemblyName?.FullName ?? Path.GetFileName(assemblyPath)} duplicate by path");
-            return similarByPathAssembly;
-        }
+        //    if (similarByPathAssembly is not null)
+        //    {
+        //        GD.Print($"Assembly {assemblyName?.FullName ?? Path.GetFileName(assemblyFullPath)} duplicate by path");
+        //        return similarByPathAssembly;
+        //    }
+        //}
 
         // Actually load a file
-        var assembly = LoadContext.LoadFromAssemblyPath(assemblyPath);
-        GD.Print($"Assembly {assembly.GetName().FullName} loaded");
+        Assembly? assembly = null;
+        try
+        {
+            assembly = LoadContext.LoadFromAssemblyPath(assemblyFullPath);
+            GD.Print($"Assembly {assembly.GetName().FullName} loaded from folder");
+        }
+        catch (Exception)
+        {
+            GD.Print($"Error loading assembly by path \"{assemblyFullPath}\"");
+            return null;
+        }
 
         if (assembly.FullName!.Contains("DotLiquid"))
         {
@@ -151,35 +215,28 @@ public static class LiquidUtil
 
         // Get dependencies
         var refs = assembly.GetReferencedAssemblies();
-        var resolver = new AssemblyDependencyResolver(assemblyPath);
+        var resolver = new AssemblyDependencyResolver(assemblyFullPath);
 
         foreach (var item in refs)
         {
-            if (LoadContext.Assemblies.Any(a => a.GetName() == item))
-                continue;
-
             var refPath = resolver.ResolveAssemblyToPath(item);
-
-            if (refPath is null)
-                continue;
-
+            GD.Print($"Assembly {assembly.GetName().Name} has dependency {item.Name}");
             GetAssembly(refPath, item);
         }
 
         return assembly;
     }
 
-    public static void ResetLiquidExtensions()
+    public static void UnloadLiquidExtensions()
     {
-        // Reset tags
-        var type = typeof(Template);
-        var tagsProperty = type.GetProperty("Tags", BindingFlags.NonPublic | BindingFlags.Static);
-        var tagsVal = tagsProperty!.GetValue(null);
-        
-        var tagsDict = tagsVal as IDictionary;
-        tagsDict!.Clear();
+        LoadContext.Unload();
+        LoadContext = new("LiquidExtensions", isCollectible: true);
 
-        // Reset filters
-        // ??
+        _templateType = _defaultTemplateType;
+        _hashType = _defaultHashType;
+
+        RebindToNewTypes();
+
+        GD.Print("Unload extensions");
     }
 }

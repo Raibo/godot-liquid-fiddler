@@ -37,8 +37,8 @@ public partial class FileAccessNode : Node
 
     private const string SettingsPath = @"settings.json";
     public string WorkingDir => Directory.GetCurrentDirectory().Replace('\\', '/');
-    public string ExecPath { get => _execPath; set => _execPath = value; }
-    private static string _execPath;
+    public string ExecPath { get => ExecPathStatic; set => ExecPathStatic = value; }
+    public static string ExecPathStatic;
 
     private Variant GetSetting(string settingName)
     {
@@ -77,8 +77,9 @@ public partial class FileAccessNode : Node
 
     private void SaveSettings()
     {
+        var settingsFullPath = Path.Combine(Path.GetDirectoryName(ExecPath), SettingsPath);
         var text = JsonConvert.SerializeObject(ConversionUtil.ToCsDict(Settings), Formatting.Indented);
-        File.WriteAllText(SettingsPath, text);
+        File.WriteAllText(settingsFullPath, text);
     }
 
     private bool SaveValues(Dictionary values, string path)
