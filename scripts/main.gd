@@ -3,7 +3,7 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#await get_tree().create_timer(7).timeout
+	#await get_tree().create_timer(0.1).timeout
 	var args = OS.get_cmdline_args()
 	
 	for arg in args:
